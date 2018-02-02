@@ -6,7 +6,7 @@
 /*   By: vtolochk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/29 16:26:02 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/01/30 14:16:02 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/01 16:35:34 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 # include <stdlib.h>
 # include <unistd.h>
+# include "get_next_line.h"
 # include "ft_printf.h"
-# define BUFF_SIZE 1
 
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);

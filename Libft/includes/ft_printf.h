@@ -6,15 +6,13 @@
 /*   By: vtolochk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/28 16:27:42 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/01/31 15:36:22 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/01 16:29:20 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 # include <stdarg.h>
-# include <stdlib.h>
-# include <unistd.h>
 # include "libft.h"
 # define MASK_1 49280
 # define MASK_2 14712960
