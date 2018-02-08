@@ -1,14 +1,10 @@
 /cmake-build-debug
 /Libft/*.o
-/Libft/*.h
 /Libft/ft_printf/*.o
-/Libft/ft_printf/*.h
 /.idea
 .*
 *.a
 *.o
 *.txt
-libft.h
-ft_printf.h
 ft_ls
 author
