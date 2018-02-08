@@ -6,7 +6,7 @@
 #    By: vtolochk <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/06 10:21:26 by vtolochk          #+#    #+#              #
-#    Updated: 2018/02/07 14:20:03 by vtolochk         ###   ########.fr        #
+#    Updated: 2018/02/08 15:17:15 by vtolochk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,10 +28,11 @@ $(NAME):
 	make -C Libft/
 	$(CC) $(CFLAGS) $(SRCS) -o $(NAME) 
 
-clean:
-	$(RM) $(OBJECTS)
+clean: 
+	make -C Libft/ clean
 
 fclean: clean
+	make -C Libft/ fclean
 	$(RM) $(NAME)
 
 re: fclean all

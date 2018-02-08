@@ -1,7 +1,11 @@
 .DS_Store
 *.swp
 /cmake-build-debug
+/Libft/*.o
+/Libft/ft_printf/*.o
 /.idea
 *.a
 *.o
 *.txt
+ft_ls
+author
