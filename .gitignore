@@ -1,4 +1,3 @@
-.DS_Store
 /cmake-build-debug
 /Libft/*.o
 /Libft/*.h
