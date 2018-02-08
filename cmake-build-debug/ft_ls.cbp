@@ -310,6 +310,9 @@
 		<Unit filename="/Users/vtolochk/Desktop/ft_ls/Libft/srcs/get_next_line.c">
 			<Option target="ft_ls"/>
 		</Unit>
+		<Unit filename="/Users/vtolochk/Desktop/ft_ls/Libft/srcs/get_next_line.h">
+			<Option target="ft_ls"/>
+		</Unit>
 		<Unit filename="/Users/vtolochk/Desktop/ft_ls/ft_get_flags.c">
 			<Option target="ft_ls"/>
 		</Unit>
