@@ -1,11 +1,11 @@
 .DS_Store
-*.swp
 /cmake-build-debug
 /Libft/*.o
 /Libft/*.h
 /Libft/ft_printf/*.o
 /Libft/ft_printf/*.h
 /.idea
+.*
 *.a
 *.o
 *.h
