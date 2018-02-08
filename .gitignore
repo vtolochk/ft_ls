@@ -7,7 +7,8 @@
 .*
 *.a
 *.o
-*.h
 *.txt
+libft.h
+ft_printf.h
 ft_ls
 author
