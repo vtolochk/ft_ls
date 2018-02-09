@@ -18,15 +18,7 @@ static void ft_flags_init(t_ls_flgs **flg)
 	(*flg)->recursion = 0;
 	(*flg)->all = 0;
 	(*flg)->reverse = 0;
-	(*flg)->lex_sort = 0;
 	(*flg)->time_sort = 0;
-}
-
-static int ft_found_flg(char c)
-{
-	if (c == 'l' || c == 'R' || c == 'a' || c == 'r' || c == 't')
-		return (1);
-	return (0);
 }
 
 static int ft_fill_struct(t_ls_flgs **flgs, char *tmp)
@@ -40,24 +32,15 @@ static int ft_fill_struct(t_ls_flgs **flgs, char *tmp)
 		else if (*tmp == 'a')
 			(*flgs)->all = 1;
 		else if (*tmp == 'r')
-		{
-			(*flgs)->lex_sort = 1;
 			(*flgs)->reverse = 1;
-		}
 		else if (*tmp == 't')
-		{
-			(*flgs)->lex_sort = 1;
 			(*flgs)->time_sort = 1;
-		}
-		if (ft_found_flg(*tmp) == 1)
-		{
-			tmp++;
-			continue ;
-		}
+		if (*tmp == 'l' || *tmp == 'R' || *tmp == 'a' || *tmp == 'r' || *tmp == 't')
+		   tmp++;
 		else
 		{
-			ft_printf("ft_ls: illegal option -- %c \n", *tmp);
-			//usage
+			ft_printf("ft_ls: illegal option -- %c\nusage"
+            ": ft_ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n", *tmp);
 			return (1);
 		}
 	}
@@ -70,7 +53,7 @@ int ft_get_flags(int argc, char **argv, t_ls_flgs *flgs)
 
 	ft_flags_init(&flgs);
 	if (argc == 1)
-		return 0;
+		return (0);
 	while (argc != 1)
 	{
 		argv++;

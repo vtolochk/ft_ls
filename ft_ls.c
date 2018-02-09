@@ -12,27 +12,48 @@
 
 #include "includes/ft_ls.h"
 
-//int ft_simple_print(char *path)
+//int ft_simple_print(char *dir_name)
 //{
 //
 //
 //}
+// START FROM THIS FUNCTION PLEASE :D ILY
+const char *ft_get_start_dir_name(int argc, char **argv)
+{
+	while (argc-- != 1)
+	{
+		if (**argv == '-')
+		{
+			(*argv)++;
+			continue ;
+		}
+		else
+		{
+			return (*argv);
+		}
+		(*argv)++;
+	}
+	return (".");
+}
+
 int ft_ls(int argc, char **argv)
 {
-	int ret;
 	t_ls_flgs flags;
+	DIR *dir_stream;
+	struct dirent *dir;
 
-	ret = 0;
-	if (ft_get_flags(argc, argv, &flags) == 1)
+	if (ft_get_flags(argc, argv, &flags))
 		return (1);
 
-	ft_printf("flags list: %c\n", flags.list == 0 ? '0' : '1');
-	ft_printf("flags recursion: %c\n", flags.recursion == 0 ? '0' : '1');
-	ft_printf("flags all: %c\n", flags.all == 0 ? '0' : '1');
-	ft_printf("flags reverse: %c\n", flags.reverse == 0 ? '0' : '1');
-	ft_printf("flags lex_sort: %c\n", flags.lex_sort == 0 ? '0' : '1');
-	ft_printf("flags time_sort: %c\n", flags.time_sort == 0 ? '0' : '1');
-	return (ret);
+	ft_printf("argc is %d\n", argc);
+	ft_printf("start directory is: %s\n", ft_get_start_dir_name(argc, argv));
+
+	dir_stream = opendir(ft_get_start_dir_name(argc, argv));
+
+	while ((dir = readdir(dir_stream)) != NULL)
+		ft_printf("%s\n", dir->d_name);
+	closedir(dir_stream);
+	return (0);
 }
 
 int main(int argc, char **argv)

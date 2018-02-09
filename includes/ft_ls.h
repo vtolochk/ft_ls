@@ -22,7 +22,6 @@ typedef  struct s_ls_flgs
 	char recursion;
 	char all;
 	char reverse;
-	char lex_sort;
 	char time_sort;
 }               t_ls_flgs;
 
