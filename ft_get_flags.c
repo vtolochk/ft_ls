@@ -49,23 +49,18 @@ static int ft_fill_struct(t_ls_flgs **flgs, char *tmp)
 
 int ft_get_flags(int argc, char **argv, t_ls_flgs *flgs)
 {
-	char *tmp;
-
 	ft_flags_init(&flgs);
-	if (argc == 1)
-		return (0);
-	while (argc != 1)
+	while (argc-- != 1)
 	{
 		argv++;
-		if ((tmp = ft_strchr(*argv, '-')) != NULL)
+		if (**argv == '-')
 		{
-			tmp++;
-			if (*tmp == '-')
+			(*argv)++;
+			if (**argv == '-')
 				break ;
-			if (ft_fill_struct(&flgs, tmp) == 1)
+			if (ft_fill_struct(&flgs, *argv) == 1)
 				return (1);
 		}
-		argc--;
 	}
 	return (0);
 }
