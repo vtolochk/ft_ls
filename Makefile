@@ -6,7 +6,7 @@
 #    By: vtolochk <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/06 10:21:26 by vtolochk          #+#    #+#              #
-#    Updated: 2018/02/08 15:25:29 by vtolochk         ###   ########.fr        #
+#    Updated: 2018/02/10 17:00:09 by vtolochk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ NAME = ft_ls
 
 LIB_NAME = libft.a
 
-SRCS = ft_ls.c ft_get_flags.c Libft/libft.a
+SRCS = write_to_array_and_sort.c ft_ls.c ft_get_flags.c Libft/libft.a \
+	   ft_get_arg_files.c helpers.c print_functions.c ft_ascii_sort.c
 
 CFLAGS = -Wall -Werror -Wextra -Iincludes
 

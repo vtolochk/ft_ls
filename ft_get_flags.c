@@ -39,8 +39,8 @@ static int ft_fill_struct(t_ls_flgs **flgs, char *tmp)
 		   tmp++;
 		else
 		{
-			ft_printf("ft_ls: illegal option -- %c\nusage"
-            ": ft_ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n", *tmp);
+			ft_printf("./ft_ls: illegal option -- %c\nusage"
+            ": ./ft_ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n", *tmp);
 			return (1);
 		}
 	}
@@ -57,9 +57,13 @@ int ft_get_flags(int argc, char **argv, t_ls_flgs *flgs)
 		{
 			(*argv)++;
 			if (**argv == '-')
+			{
+				(*argv)--;
 				break ;
+			}
 			if (ft_fill_struct(&flgs, *argv) == 1)
 				return (1);
+			(*argv)--;
 		}
 	}
 	return (0);
