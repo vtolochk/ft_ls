@@ -25,5 +25,5 @@ int ft_ls_print(char *file_name, char **argv, char file_type)
 		ft_printf("%s\n", dir->d_name);
 	if (file_type == 'd' && closedir(dir_stream) == -1)
 		return (ft_print_error(argv, file_name));
-	return (SUCCESS);
+	return (OK);
 }

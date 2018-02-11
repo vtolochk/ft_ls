@@ -5,6 +5,7 @@
 .*
 *.a
 *.o
+*test*
 *.txt
 ft_ls
 author

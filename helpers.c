@@ -66,6 +66,7 @@ void ft_dirs_third(char **argv, char **arg_files)
 			continue ;
 		}
 		file_type = ft_get_file_type(arg_files[i]);
+		ft_printf("%s:\n", arg_files[i]); // only if -R flag
 		ft_ls_print(arg_files[i], argv, file_type);
 		i++;
 	}
@@ -74,5 +75,5 @@ void ft_dirs_third(char **argv, char **arg_files)
 int ft_print_error(char **argv, char *file_name)
 {
 	ft_printf("%s: %s: %s\n", argv[0], file_name, strerror(errno));
-	return (ERROR);
+	return (FAIL);
 }

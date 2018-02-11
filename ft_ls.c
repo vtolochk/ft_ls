@@ -37,23 +37,35 @@ char ft_get_file_type(char *file_name)
 	return ('-');
 }
 
-int ft_ls(int argc, char **argv)
+int ft_ls(char **argv, char **arg_files, t_ls_flgs flags)
+{
+	char *root;
+
+	if (flags.recursion == 1)
+	{
+		int i = 0;
+		while (arg_files[i])
+		{
+			root = ft_strjoin(arg_files[i], "/"); // if it is not this directory ->> /
+			ft_ls_recursion(arg_files[i], root);
+			i++;
+		}
+	}
+	else
+		ft_dirs_third(argv, arg_files);
+	return (OK);
+}
+
+int main(int argc, char **argv)
 {
 	t_ls_flgs flags;
 	char **arg_files;
 
 	if (ft_get_flags(argc, argv, &flags))
-		return (ERROR);
+		return (FAIL);
 	arg_files = ft_get_arg_files(argc, argv);
 	ft_ascii_sort(arg_files);
 	ft_error_first(argv, arg_files);
 	ft_files_second(argv, arg_files);
-	ft_dirs_third(argv, arg_files);
-
-	return (SUCCESS);
-}
-
-int main(int argc, char **argv)
-{
-	return (ft_ls(argc, argv));
+	return (ft_ls(argv, arg_files, flags));
 }
