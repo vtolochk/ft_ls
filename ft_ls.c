@@ -39,15 +39,14 @@ char ft_get_file_type(char *file_name)
 
 int ft_ls(char **argv, char **arg_files, t_ls_flgs flags)
 {
-	char *root;
+	unsigned int i;
 
+	i = 0;
 	if (flags.recursion == 1)
 	{
-		int i = 0;
 		while (arg_files[i])
 		{
-			root = ft_strjoin(arg_files[i], "/"); // if it is not this directory ->> /
-			ft_ls_recursion(arg_files[i], root);
+			ft_dirwalk(arg_files[i]);
 			i++;
 		}
 	}

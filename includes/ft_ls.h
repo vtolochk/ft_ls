@@ -32,7 +32,7 @@ typedef  struct s_ls_flgs
 }               t_ls_flgs;
 
 
-int ft_ls_recursion(char *dir_name, char *root);
+int ft_dirwalk(char *dir_name);
 int ft_print_error(char **argv, char *file_name);
 char **ft_get_arg_files(int argc, char **argv);
 unsigned int ft_files_nb(char *file_name);

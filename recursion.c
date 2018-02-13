@@ -12,10 +12,10 @@
 
 #include "ft_ls.h"
 
-static void ft_stupid_print(char **files_arr) // delete this function please :)
+static void ft_stupid_print(char **files_arr, char *dir_name) // delete this function please :)
 {
 	int i = 0;
-	ft_printf("%green%NEXT DIR\n%eoc%");
+	ft_printf("%green%%s\n%eoc%", dir_name);
 	while (files_arr[i])
 		ft_printf("%s\n", files_arr[i++]);
 }
@@ -45,9 +45,9 @@ static char **ft_write_to_arr(char *file_name)
 	dir_stream = opendir(file_name);
 	while ((dir = readdir(dir_stream)) != NULL)
 	{
-		if (dir->d_name[0] == '.' || (dir->d_name[0] == '0' && dir->d_name[1] == '.'))
+		if (dir->d_name[0] == '.')
 			continue;
-		files_arr[i] = ft_strjoin("/", dir->d_name);
+		files_arr[i] = ft_strdup(dir->d_name);
 		i++;
 	}
 	files_arr[i] = NULL;
@@ -55,46 +55,49 @@ static char **ft_write_to_arr(char *file_name)
 	return (files_arr);
 }
 
-char *ft_check_for_dir(char **files_arr, char **root, unsigned int *i)
+char ft_isdir(char *dir)
 {
-	char file_type;
-	char *temp;
+	DIR *ptr;
 
-	while (files_arr[*i])
+	if ((ptr = opendir(dir)))
 	{
-		temp = ft_strjoin(*root, files_arr[*i]);
-		file_type = ft_get_file_type(temp);
-		if (file_type == 'd')
+		if (readdir(ptr))
 		{
-
-		// start here u need to join strings into recursion
-			return (files_arr[(*i)++]);
+			closedir(ptr);
+			return (1);
 		}
-		free(temp);
-		i++;
 	}
-	char *tmp = ft_strrchr(*root, '/'); // maybe stupid thing
-	*tmp = '\0';
-	*root = ft_strdup(tmp);
-	return (NULL);
+	return (0);
 }
 
-int ft_ls_recursion(char *dir_name, char *root)
+int ft_dirwalk(char *dir_name)
 {
 	char *next_dir;
+	char *temp;
 	char **files_arr;
 	unsigned int i;
 
 	i = 0;
 	if (dir_name == NULL)
 		return (OK);
-	next_dir = NULL;
-	files_arr = ft_write_to_arr(root);
-	if (*files_arr == NULL) // if directory empty
+	files_arr = ft_write_to_arr(dir_name);
+	if (*files_arr == NULL)
+	{
+		ft_printf("%green%%s:%eoc%\n\n", dir_name);
 		return (OK);
-	ft_ascii_sort(files_arr);
-	ft_stupid_print(files_arr);
-	if ((next_dir = ft_check_for_dir(files_arr, &root, &i)) != NULL)
-		ft_ls_recursion(next_dir, root);
+	}
+	ft_ascii_sort(files_arr); // ft_ascii_sort is problem, without it -R works fine
+	ft_stupid_print(files_arr, dir_name);
+	while (files_arr[i])
+	{
+		temp = ft_strjoin(dir_name, "/");
+		next_dir = ft_strjoin(temp, files_arr[i]);
+		free(temp);
+		if (ft_isdir(next_dir))
+			ft_dirwalk(next_dir);
+		i++;
+		free(next_dir);
+	}
 	return (OK);
 }
+
