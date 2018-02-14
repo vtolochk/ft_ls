@@ -16,33 +16,49 @@ static void ft_swap(char **arr, int index_1, int index_2)
 {
 	char *tmp[2];
 
-	ft_memcpy(tmp, arr[index_1], sizeof(tmp));
-	ft_memcpy(arr[index_1], arr[index_2], sizeof(arr[index_1]));
-	ft_memcpy(arr[index_2], tmp, sizeof(arr[index_2]));
+	tmp[0] = ft_strdup(arr[index_1]);
+	tmp[1] = ft_strdup(arr[index_2]);
+	free(arr[index_1]);
+	free(arr[index_2]);
+	arr[index_1] = tmp[1];
+	arr[index_2] = tmp[0];
 }
-
-void ft_ascii_sort(char **arr)      //u could make it faster
+static unsigned int ft_arr_len(char **arr)
 {
-	int i;
-	int len;
+	unsigned int i;
+	unsigned int len;
 
 	i = 0;
 	len = 0;
 	while (arr[i++])
 		len++;
-	if (!len)
-		return ;
+	return (len);
+}
+
+void ft_ascii_sort(char **arr)
+{
+	unsigned int    i;
+	unsigned int    j;
+	unsigned int    len;
+	char            flag;
+
 	i = 0;
-	while (i != len)
+	len = ft_arr_len(arr);
+	while (i != len - 1)
 	{
-		if (!arr[i + 1])
-			return ;
-		if (ft_strcmp(arr[i], arr[i+1]) > 0)
+		j = 0;
+		flag = 0;
+		while (j != len)
 		{
-			ft_swap(arr, i, i + 1);
-			i = 0;
-			continue;
+			if (ft_strcmp(arr[j], arr[j+1]) > 0)
+			{
+				ft_swap(arr, j, j + 1);
+				flag = 1;
+			}
+			j++;
 		}
+		if (flag == 0)
+			return ;
 		i++;
 	}
 }

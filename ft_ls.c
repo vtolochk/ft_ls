@@ -42,16 +42,15 @@ int ft_ls(char **argv, char **arg_files, t_ls_flgs flags)
 	unsigned int i;
 
 	i = 0;
+	ft_dirs_third(argv, arg_files);
 	if (flags.recursion == 1)
 	{
 		while (arg_files[i])
-		{
-			ft_dirwalk(arg_files[i]);
-			i++;
-		}
+			ft_dirwalk(arg_files[i++], argv);
 	}
 	else
 		ft_dirs_third(argv, arg_files);
+	ft_free_tab((void**)arg_files);
 	return (OK);
 }
 

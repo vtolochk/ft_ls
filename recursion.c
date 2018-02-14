@@ -15,7 +15,7 @@
 static void ft_stupid_print(char **files_arr, char *dir_name) // delete this function please :)
 {
 	int i = 0;
-	ft_printf("%green%%s\n%eoc%", dir_name);
+	ft_printf("%+blue%%s\n%eoc%", dir_name);
 	while (files_arr[i])
 		ft_printf("%s\n", files_arr[i++]);
 }
@@ -41,14 +41,14 @@ static char **ft_write_to_arr(char *file_name)
 	unsigned int i;
 
 	i = 0;
-	files_arr = (char **)malloc(sizeof(char*) * ft_files_nb(file_name));
+	if (!(files_arr = (char **)malloc(sizeof(char*) * ft_files_nb(file_name))))
+		return (NULL);
 	dir_stream = opendir(file_name);
 	while ((dir = readdir(dir_stream)) != NULL)
 	{
 		if (dir->d_name[0] == '.')
 			continue;
-		files_arr[i] = ft_strdup(dir->d_name);
-		i++;
+		files_arr[i++] = ft_strdup(dir->d_name);
 	}
 	files_arr[i] = NULL;
 	closedir(dir_stream);
@@ -70,7 +70,7 @@ char ft_isdir(char *dir)
 	return (0);
 }
 
-int ft_dirwalk(char *dir_name)
+int ft_dirwalk(char *dir_name, char **argv)
 {
 	char *next_dir;
 	char *temp;
@@ -80,24 +80,27 @@ int ft_dirwalk(char *dir_name)
 	i = 0;
 	if (dir_name == NULL)
 		return (OK);
-	files_arr = ft_write_to_arr(dir_name);
-	if (*files_arr == NULL)
+	if (!(files_arr = ft_write_to_arr(dir_name)))
+		return (FAIL);
+	if (*files_arr == NULL) // if dir is empty
 	{
-		ft_printf("%green%%s:%eoc%\n\n", dir_name);
+		ft_printf("%blue%%s:%eoc%\n\n", dir_name);
 		return (OK);
 	}
-	ft_ascii_sort(files_arr); // ft_ascii_sort is problem, without it -R works fine
+	ft_ascii_sort(files_arr);
 	ft_stupid_print(files_arr, dir_name);
 	while (files_arr[i])
 	{
+		if (files_arr[i][0] == '\0')
+			return (OK);
 		temp = ft_strjoin(dir_name, "/");
 		next_dir = ft_strjoin(temp, files_arr[i]);
 		free(temp);
 		if (ft_isdir(next_dir))
-			ft_dirwalk(next_dir);
+			ft_dirwalk(next_dir, argv);
 		i++;
 		free(next_dir);
 	}
+	ft_free_tab((void**)files_arr);
 	return (OK);
 }
-

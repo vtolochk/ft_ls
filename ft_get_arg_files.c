@@ -25,7 +25,7 @@ char **ft_get_arg_files(int argc, char **argv)
 		files_names[i++] = ft_strdup(".");
 	while (argc != 1 && (argv[j][0] == '-'))
 	{
-		if (argv[j++][0] == '-' && argv[j][1] == '-')
+		if ( argv[j++][1] == '-')
 		{
 			j++;
 			break;
