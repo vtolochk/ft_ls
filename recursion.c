@@ -20,16 +20,18 @@ static void ft_stupid_print(char **files_arr, char *dir_name) // delete this fun
 		ft_printf("%s\n", files_arr[i++]);
 }
 
-unsigned int ft_files_nb(char *file_name)
+long int ft_files_nb(char *file_name)
 {
 	DIR *dir_stream;
 	unsigned int files_nb;
 
 	files_nb = 0;
-	dir_stream = opendir(file_name);
-	while (readdir(dir_stream) != NULL)
+	if (!(dir_stream = opendir(file_name)))
+		return (-1);
+	while (readdir(dir_stream))
 		files_nb++;
-	closedir(dir_stream);
+	if ((closedir(dir_stream) == -1))
+		return (-1);
 	return (files_nb);
 }
 
@@ -39,35 +41,25 @@ static char **ft_write_to_arr(char *file_name)
 	struct dirent *dir;
 	char **files_arr;
 	unsigned int i;
+	long int files_nb;
 
 	i = 0;
-	if (!(files_arr = (char **)malloc(sizeof(char*) * ft_files_nb(file_name))))
+	if (((files_nb = ft_files_nb(file_name)) == -1))
 		return (NULL);
-	dir_stream = opendir(file_name);
+	if (!(files_arr = (char **)malloc(sizeof(char *) * files_nb)))
+		return (NULL);
+	if (!(dir_stream = opendir(file_name)))
+		return (ft_free_tab((void **)files_arr));
 	while ((dir = readdir(dir_stream)) != NULL)
 	{
 		if (dir->d_name[0] == '.')
-			continue;
+			continue ;
 		files_arr[i++] = ft_strdup(dir->d_name);
 	}
 	files_arr[i] = NULL;
-	closedir(dir_stream);
+	if (closedir(dir_stream) == -1)
+		return (ft_free_tab((void **)files_arr));
 	return (files_arr);
-}
-
-char ft_isdir(char *dir)
-{
-	DIR *ptr;
-
-	if ((ptr = opendir(dir)))
-	{
-		if (readdir(ptr))
-		{
-			closedir(ptr);
-			return (1);
-		}
-	}
-	return (0);
 }
 
 int ft_dirwalk(char *dir_name, char **argv)
@@ -78,7 +70,7 @@ int ft_dirwalk(char *dir_name, char **argv)
 	unsigned int i;
 
 	i = 0;
-	if (dir_name == NULL)
+	if (!dir_name)
 		return (OK);
 	if (!(files_arr = ft_write_to_arr(dir_name)))
 		return (FAIL);

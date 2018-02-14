@@ -34,7 +34,7 @@ char ft_get_file_type(char *file_name)
 		return ('s');
 	else if (file_stat.st_mode & S_IFWHT)
 		return ('w');
-	return ('-');
+	return ('e');
 }
 
 int ft_ls(char **argv, char **arg_files, t_ls_flgs flags)
@@ -42,14 +42,15 @@ int ft_ls(char **argv, char **arg_files, t_ls_flgs flags)
 	unsigned int i;
 
 	i = 0;
+	ft_error_first(argv, arg_files);
+	ft_files_second(argv, arg_files);
 	ft_dirs_third(argv, arg_files);
 	if (flags.recursion == 1)
 	{
 		while (arg_files[i])
-			ft_dirwalk(arg_files[i++], argv);
+			if (ft_dirwalk(arg_files[i++], argv) == FAIL)
+				return (FAIL);
 	}
-	else
-		ft_dirs_third(argv, arg_files);
 	ft_free_tab((void**)arg_files);
 	return (OK);
 }
@@ -63,7 +64,7 @@ int main(int argc, char **argv)
 		return (FAIL);
 	arg_files = ft_get_arg_files(argc, argv);
 	ft_ascii_sort(arg_files);
-	ft_error_first(argv, arg_files);
-	ft_files_second(argv, arg_files);
-	return (ft_ls(argv, arg_files, flags));
+	if (ft_ls(argv, arg_files, flags) == FAIL)
+		return (FAIL);
+	return (OK);
 }

@@ -19,6 +19,7 @@ static void ft_flags_init(t_ls_flgs **flg)
 	(*flg)->all = 0;
 	(*flg)->reverse = 0;
 	(*flg)->time_sort = 0;
+	(*flg)->one = 0;
 }
 
 static int ft_fill_struct(t_ls_flgs **flgs, char *tmp)
@@ -35,12 +36,15 @@ static int ft_fill_struct(t_ls_flgs **flgs, char *tmp)
 			(*flgs)->reverse = 1;
 		else if (*tmp == 't')
 			(*flgs)->time_sort = 1;
-		if (*tmp == 'l' || *tmp == 'R' || *tmp == 'a' || *tmp == 'r' || *tmp == 't')
+		else if (*tmp == '1')
+			(*flgs)->one = 1;
+		if (*tmp == 'l' || *tmp == 'R' || *tmp == 'a' || *tmp == 'r' || *tmp == 't' ||
+			*tmp == '1')
 		   tmp++;
 		else
 		{
 			ft_printf("./ft_ls: illegal option -- %c\nusage"
-            ": ./ft_ls [-ABCFGHLOPRSTUWabcdefghiklmnopqrstuwx1] [file ...]\n", *tmp);
+            ": ./ft_ls [-Ralrt1] [file ...]\n", *tmp);
 			return (FAIL);
 		}
 	}

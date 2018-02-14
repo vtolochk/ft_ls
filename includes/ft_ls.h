@@ -29,13 +29,14 @@ typedef  struct s_ls_flgs
 	char all;
 	char reverse;
 	char time_sort;
+	char one;
 }               t_ls_flgs;
 
-
+char ft_isdir(char *dir);
 int ft_dirwalk(char *dir_name, char **argv);
-int ft_print_error(char **argv, char *file_name);
+int ft_print_errno(char **argv, char *file_name);
 char **ft_get_arg_files(int argc, char **argv);
-unsigned int ft_files_nb(char *file_name);
+long int ft_files_nb(char *file_name);
 int ft_get_flags(int argc, char **argv, t_ls_flgs *flgs);
 char ft_get_file_type(char *file_name);
 int ft_ls_print(char *file_name, char **argv, char file_type);

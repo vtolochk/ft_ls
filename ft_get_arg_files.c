@@ -14,8 +14,8 @@
 
 char **ft_get_arg_files(int argc, char **argv)
 {
-	int i;
-	int j;
+	unsigned int i;
+	unsigned int j;
 	char **files_names;
 
 	i = 0;

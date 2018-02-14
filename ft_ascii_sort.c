@@ -57,7 +57,7 @@ void ft_ascii_sort(char **arr)
 			}
 			j++;
 		}
-		if (flag == 0)
+		if (!flag)
 			return ;
 		i++;
 	}

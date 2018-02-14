@@ -20,10 +20,10 @@ int ft_ls_print(char *file_name, char **argv, char file_type)
 	if (file_type == '-')
 		ft_printf("%s\n", file_name);
 	if (file_type == 'd' && !(dir_stream = opendir(file_name)))
-		return (ft_print_error(argv, file_name));
+		return (ft_print_errno(argv, file_name));
 	while (file_type == 'd' && (dir = readdir(dir_stream)) != NULL)
 		ft_printf("%s\n", dir->d_name);
 	if (file_type == 'd' && closedir(dir_stream) == -1)
-		return (ft_print_error(argv, file_name));
+		return (ft_print_errno(argv, file_name));
 	return (OK);
 }
