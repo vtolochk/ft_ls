@@ -12,6 +12,31 @@
 
 #include "ft_ls.h"
 
+char ft_get_file_type(char *file_name)
+{
+	struct stat file_stat;
+
+	if (lstat(file_name, &file_stat) == -1)
+		return ('e');
+	if (file_stat.st_mode & S_IFIFO)
+		return ('f');
+	else if (file_stat.st_mode & S_IFCHR)
+		return ('c');
+	else if (file_stat.st_mode & S_IFDIR)
+		return ('d');
+	else if (file_stat.st_mode & S_IFBLK)
+		return ('b');
+	else if (file_stat.st_mode & S_IFREG)
+		return ('-');
+	else if (file_stat.st_mode & S_IFLNK)
+		return ('l');
+	else if (file_stat.st_mode & S_IFSOCK)
+		return ('s');
+	else if (file_stat.st_mode & S_IFWHT)
+		return ('w');
+	return ('e');
+}
+
 char ft_isdir(char *dir)
 {
 	DIR *ptr;
@@ -43,44 +68,18 @@ void ft_error_first(char **argv, char **arg_files)
 	}
 }
 
-void ft_files_second (char **argv, char **arg_files) // later you will need to add pointer to func
-{                                                    // which will print long or simple format
-	int i;
-	char file_type;
+void ft_files_second(char **arg_files, void (*print)(char *))
+{
+	unsigned int i;
 
 	i = 0;
 	while (arg_files[i])
 	{
-		if (arg_files[i][0] == '\0')
+		if (ft_get_file_type(arg_files[i]) == '-')
 		{
-			i++;
-			continue ;
-		}
-		if ((file_type = ft_get_file_type(arg_files[i])) == '-')
-		{
-			ft_ls_print(arg_files[i], argv, file_type);
+			print(arg_files[i]);
 			arg_files[i][0] = '\0';
 		}
-		i++;
-	}
-}
-
-void ft_dirs_third(char **argv, char **arg_files)
-{
-	int i;
-	char file_type;
-
-	i = 0;
-	while (arg_files[i])
-	{
-		if (arg_files[i][0] == '\0')
-		{
-			i++;
-			continue ;
-		}
-		file_type = ft_get_file_type(arg_files[i]);
-		ft_printf("%s:\n", arg_files[i]); // only if -R flag
-		ft_ls_print(arg_files[i], argv, file_type);
 		i++;
 	}
 }

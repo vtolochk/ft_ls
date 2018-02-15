@@ -20,6 +20,7 @@ static void ft_flags_init(t_ls_flgs **flg)
 	(*flg)->reverse = 0;
 	(*flg)->time_sort = 0;
 	(*flg)->one = 0;
+	(*flg)->flag_special = 0;
 }
 
 static int ft_fill_struct(t_ls_flgs **flgs, char *tmp)
@@ -63,12 +64,13 @@ int ft_get_flags(int argc, char **argv, t_ls_flgs *flgs)
 			if (**argv == '-')
 			{
 				(*argv)--;
-				break ;
+				flgs->flag_special = 1;
+				break;
 			}
 			if (ft_fill_struct(&flgs, *argv) == FAIL)
 				return (FAIL);
 			(*argv)--;
 		}
 	}
-	return (0);
+	return (OK);
 }

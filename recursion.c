@@ -35,7 +35,7 @@ long int ft_files_nb(char *file_name)
 	return (files_nb);
 }
 
-static char **ft_write_to_arr(char *file_name)
+char **ft_write_to_arr(char *file_name)
 {
 	DIR *dir_stream;
 	struct dirent *dir;
@@ -62,7 +62,7 @@ static char **ft_write_to_arr(char *file_name)
 	return (files_arr);
 }
 
-int ft_dirwalk(char *dir_name, char **argv)
+int ft_dirwalk(char *dir_name, char **argv) //u have to add pointer to func which will print :)
 {
 	char *next_dir;
 	char *temp;
@@ -70,7 +70,7 @@ int ft_dirwalk(char *dir_name, char **argv)
 	unsigned int i;
 
 	i = 0;
-	if (!dir_name)
+	if (!dir_name || !dir_name[0])
 		return (OK);
 	if (!(files_arr = ft_write_to_arr(dir_name)))
 		return (FAIL);
@@ -80,7 +80,7 @@ int ft_dirwalk(char *dir_name, char **argv)
 		return (OK);
 	}
 	ft_ascii_sort(files_arr);
-	ft_stupid_print(files_arr, dir_name);
+	ft_stupid_print(files_arr, dir_name); // delete this stupid thing at all please :D
 	while (files_arr[i])
 	{
 		if (files_arr[i][0] == '\0')

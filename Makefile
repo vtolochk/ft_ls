@@ -6,7 +6,7 @@
 #    By: vtolochk <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/06 10:21:26 by vtolochk          #+#    #+#              #
-#    Updated: 2018/02/13 10:30:36 by vtolochk         ###   ########.fr        #
+#    Updated: 2018/02/15 19:29:46 by vtolochk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ NAME = ft_ls
 LIB_NAME = libft.a
 
 SRCS = ft_ls.c recursion.c ft_get_flags.c Libft/libft.a \
-	   ft_get_arg_files.c helpers.c print_functions.c ft_ascii_sort.c
+	   ft_get_arg_files.c helpers.c print_functions.c ft_ascii_sort.c \
+	   dirs_from_arguments.c
 
 CFLAGS = -Wall -Werror -Wextra -Iincludes
 

@@ -23,7 +23,8 @@ static void ft_swap(char **arr, int index_1, int index_2)
 	arr[index_1] = tmp[1];
 	arr[index_2] = tmp[0];
 }
-static unsigned int ft_arr_len(char **arr)
+
+unsigned int ft_arr_len(char **arr)
 {
 	unsigned int i;
 	unsigned int len;
