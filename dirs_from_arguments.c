@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void ft_dirs_third(char **arg_files, void (*print)(char *))
+void ft_dirs_third(char **arg_files, void (*print)(char *, t_ls), t_ls f)
 {
 	unsigned int    i;
 	unsigned int    j;
@@ -28,10 +28,10 @@ void ft_dirs_third(char **arg_files, void (*print)(char *))
 		{
 			if (ft_arr_len(arg_files) > 1)
 				ft_printf("%s:\n", arg_files[i]);
-			dir_files = ft_write_to_arr(arg_files[i]);
+			dir_files = ft_write_to_arr(arg_files[i], f);
 			ft_ascii_sort(dir_files);
 			while (dir_files[j])
-				print(dir_files[j++]);
+				print(dir_files[j++], f);
 			ft_free_tab((void**)dir_files);
 			arg_files[i][0] = '\0';
 		}

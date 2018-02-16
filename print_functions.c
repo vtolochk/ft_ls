@@ -12,21 +12,16 @@
 
 #include "ft_ls.h"
 
-void ft_one_print(char *file)
+void ft_one_print(char *file, t_ls data)
 {
 	ft_printf("%s\n", file);
+	data.big_g = 0;
 }
 
-void ft_simple_print(char *files)
+void ft_long_print(char *file, t_ls data)
 {
-	files++;
-	ft_printf("simple print func\n");
-	ft_printf("later:D\n");
-}
-
-void ft_long_print(char *files)
-{
-	files++;
+	file++;
+	data.big_g = 0;
 	ft_printf("long print func\n");
 	ft_printf("later:D\n");
 }

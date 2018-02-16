@@ -12,44 +12,44 @@
 
 #include "includes/ft_ls.h"
 
-static void (*ft_get_print_function(t_ls_flgs flags))(char *f_arr)
+static void (*ft_get_print_function(t_ls flags))(char *f_arr, t_ls flg)
 {
 	if (flags.list == 1)
 		return (ft_long_print);
-	else if (flags.one == 1)
-		return (ft_one_print);
-	return (ft_simple_print);
+	return (ft_one_print);
 }
 
-int ft_ls(char **argv, char **arg_files, t_ls_flgs flags, void (*func)(char *))
+int ft_ls(char **argv, char **arg_files, t_ls flags, void (*func)(char *, t_ls))
 {
 	unsigned int i;
 
 	i = 0;
-	ft_error_first(argv, arg_files);
-	ft_files_second(arg_files, func); // you need to play with printing if u have -R or dont
+	ft_error_first(argv, arg_files, flags);
+	ft_files_second(arg_files, flags, func);
+	while (arg_files[flags.arg_nb])
+		flags.arg_nb++;
 	if (flags.recursion == 1)
 	{
 		while (arg_files[i])
-			if (ft_dirwalk(arg_files[i++], argv) == FAIL)
+			if (ft_dirwalk(arg_files[i++], argv, func, flags) == FAIL)
 				return (FAIL);
 	}
 	else
-		ft_dirs_third(arg_files, func);
+		ft_dirs_third(arg_files, func, flags);
 	ft_free_tab((void**)arg_files);
 	return (OK);
 }
 
 int main(int argc, char **argv)
 {
-	t_ls_flgs flags;
+	t_ls flags;
 	char **arg_files;
-	void (*func_ptr)(char *);
+	void (*func_ptr)(char *, t_ls);
 
 	if (ft_get_flags(argc, argv, &flags))
 		return (FAIL);
 	func_ptr = ft_get_print_function(flags);
-	arg_files = ft_get_arg_files(argc, argv, flags.flag_special);
+	arg_files = ft_get_arg_files(argc, argv, flags.double_minus);
 	ft_ascii_sort(arg_files);
 	if (ft_ls(argv, arg_files, flags, func_ptr) == FAIL)
 		return (FAIL);

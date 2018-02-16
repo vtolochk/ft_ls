@@ -52,11 +52,12 @@ char ft_isdir(char *dir)
 	return (0);
 }
 
-void ft_error_first(char **argv, char **arg_files)
+void ft_error_first(char **argv, char **arg_files, t_ls f)
 {
 	int i;
 
 	i = 0;
+	f.big_g = 0; // u have to color this shit in red :)
 	while (arg_files[i])
 	{
 		if ((ft_get_file_type(arg_files[i])) == 'e')
@@ -68,7 +69,7 @@ void ft_error_first(char **argv, char **arg_files)
 	}
 }
 
-void ft_files_second(char **arg_files, void (*print)(char *))
+void ft_files_second(char **arg_files, t_ls f, void (*print)(char *, t_ls))
 {
 	unsigned int i;
 
@@ -77,7 +78,7 @@ void ft_files_second(char **arg_files, void (*print)(char *))
 	{
 		if (ft_get_file_type(arg_files[i]) == '-')
 		{
-			print(arg_files[i]);
+			print(arg_files[i], f);
 			arg_files[i][0] = '\0';
 		}
 		i++;

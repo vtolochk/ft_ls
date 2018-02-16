@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-static void ft_flags_init(t_ls_flgs **flg)
+static void ft_flags_init(t_ls **flg)
 {
 	(*flg)->list = 0;
 	(*flg)->recursion = 0;
@@ -20,10 +20,12 @@ static void ft_flags_init(t_ls_flgs **flg)
 	(*flg)->reverse = 0;
 	(*flg)->time_sort = 0;
 	(*flg)->one = 0;
-	(*flg)->flag_special = 0;
+	(*flg)->double_minus = 0;
+	(*flg)->arg_nb = 0;
+	(*flg)->big_g = 0;
 }
 
-static int ft_fill_struct(t_ls_flgs **flgs, char *tmp)
+static int ft_fill_struct(t_ls **flgs, char *tmp)
 {
 	while (*tmp != '\0')
 	{
@@ -39,20 +41,22 @@ static int ft_fill_struct(t_ls_flgs **flgs, char *tmp)
 			(*flgs)->time_sort = 1;
 		else if (*tmp == '1')
 			(*flgs)->one = 1;
+		else if (*tmp == 'G')
+			(*flgs)->big_g = 1;
 		if (*tmp == 'l' || *tmp == 'R' || *tmp == 'a' || *tmp == 'r' || *tmp == 't' ||
-			*tmp == '1')
+			*tmp == '1' || *tmp == 'G')
 		   tmp++;
 		else
 		{
 			ft_printf("./ft_ls: illegal option -- %c\nusage"
-            ": ./ft_ls [-Ralrt1] [file ...]\n", *tmp);
+            ": ./ft_ls [-GRalrt1] [file ...]\n", *tmp);
 			return (FAIL);
 		}
 	}
 	return (OK);
 }
 
-int ft_get_flags(int argc, char **argv, t_ls_flgs *flgs)
+int ft_get_flags(int argc, char **argv, t_ls *flgs)
 {
 	ft_flags_init(&flgs);
 	while (argc-- != 1)
@@ -64,7 +68,7 @@ int ft_get_flags(int argc, char **argv, t_ls_flgs *flgs)
 			if (**argv == '-')
 			{
 				(*argv)--;
-				flgs->flag_special = 1;
+				flgs->double_minus = 1;
 				break;
 			}
 			if (ft_fill_struct(&flgs, *argv) == FAIL)

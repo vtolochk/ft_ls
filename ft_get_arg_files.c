@@ -27,7 +27,7 @@ static void ft_while_flags(int *argc, char **argv, unsigned int *j, char flag)
 	}
 }
 
-char **ft_get_arg_files(int argc, char **argv, char flag_special)
+char **ft_get_arg_files(int argc, char **argv, char double_minus)
 {
 	unsigned int i;
 	unsigned int j;
@@ -41,7 +41,7 @@ char **ft_get_arg_files(int argc, char **argv, char flag_special)
 		return (NULL);
 	if (argc == 1)
 		files_names[i++] = ft_strdup(".");
-	ft_while_flags(&argc, argv, &j, flag_special);
+	ft_while_flags(&argc, argv, &j, double_minus);
 	if (argc == 1 && tmp != 1)
 		files_names[i++] = ft_strdup(".");
 	while (argc != 1)
