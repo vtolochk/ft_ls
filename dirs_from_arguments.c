@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void ft_dirs_third(char **arg_files, void (*print)(char *, t_ls), t_ls f)
+void ft_dirs_third(char **arg_files, void (*print)(char *, t_ls *), t_ls *f)
 {
 	unsigned int    i;
 	unsigned int    j;

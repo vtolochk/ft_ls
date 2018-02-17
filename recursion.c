@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-long int ft_files_nb(char *file_name, t_ls f)
+long int ft_files_nb(char *file_name, t_ls *f)
 {
 	DIR *dir_stream;
 	unsigned int files_nb;
@@ -23,7 +23,7 @@ long int ft_files_nb(char *file_name, t_ls f)
 		return (-1);
 	while ((dir = readdir(dir_stream)))
 	{
-		if (f.all == 0 && dir->d_name[0] == '.')
+		if (f->all == 0 && dir->d_name[0] == '.')
 			continue ;
 		files_nb++;
 	}
@@ -32,7 +32,7 @@ long int ft_files_nb(char *file_name, t_ls f)
 	return (files_nb);
 }
 
-char **ft_write_to_arr(char *file_name, t_ls f)
+char **ft_write_to_arr(char *file_name, t_ls *f)
 {
 	DIR *dir_stream;
 	struct dirent *dir;
@@ -49,10 +49,8 @@ char **ft_write_to_arr(char *file_name, t_ls f)
 		return (ft_free_tab((void **)files_arr));
 	while ((dir = readdir(dir_stream)) != NULL)
 	{
-		if (f.all == 0 && dir->d_name[0] == '.')
-		{
+		if (f->all == 0 && dir->d_name[0] == '.')
 			continue ;
-		}
 		files_arr[i++] = ft_strdup(dir->d_name);
 	}
 	files_arr[i] = 0;
@@ -61,7 +59,7 @@ char **ft_write_to_arr(char *file_name, t_ls f)
 	return (files_arr);
 }
 
-int ft_dirwalk(char *dir_name, char **argv, void (*print)(char *, t_ls), t_ls f)
+int ft_dirwalk(char *dir_name, char **argv, void (*print)(char *, t_ls *), t_ls *f)
 {
 	char *next_dir;
 	char *temp;
@@ -77,20 +75,14 @@ int ft_dirwalk(char *dir_name, char **argv, void (*print)(char *, t_ls), t_ls f)
 		return (FAIL);
 	if (*files_arr == NULL)
 	{
-		ft_printf("%cyan%%s:%eoc%\n\n", dir_name);
+		ft_printf("%cyan%%s:%eoc%\n", dir_name);
 		return (OK);
 	}
-	if (f.all == 1)
-	{
-		if (f.arg_nb > 2 || ft_arr_len(files_arr) > 0)
-			ft_printf("%cyan%%s:%eoc%\n", dir_name);
-	}
+	if ((f->arg_nb > 2 || ft_arr_len(files_arr) > 0) && f->first_dir == 0)
+		ft_printf("%cyan%%s:%eoc%\n", dir_name);
 	ft_ascii_sort(files_arr);
 	while (files_arr[k])
-	{
-		print(files_arr[k], f);
-		k++;
-	}
+		print(files_arr[k++], f);
 	while (files_arr[i])
 	{
 		if (ft_strncmp(files_arr[i], ".", 2) == 0)
@@ -100,11 +92,14 @@ int ft_dirwalk(char *dir_name, char **argv, void (*print)(char *, t_ls), t_ls f)
 		if (!(files_arr[i]))
 			return (OK);
 		temp = ft_strjoin(dir_name, "/");
-		next_dir = ft_strjoin(temp, files_arr[i]);
+		next_dir = ft_strjoin(temp, files_arr[i++]);
 		free(temp);
 		if (ft_isdir(next_dir))
+		{
+			write(1, "\n", 1);
+			f->first_dir = 0;
 			ft_dirwalk(next_dir, argv, print, f);
-		i++;
+		}
 		free(next_dir);
 	}
 	ft_free_tab((void**)files_arr);
