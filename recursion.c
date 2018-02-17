@@ -42,7 +42,11 @@ char **ft_write_to_arr(char *file_name, t_ls *f)
 
 	i = 0;
 	if (((files_nb = ft_files_nb(file_name, f)) == -1))
+	{
+		ft_printf("%cyan%%s:%eoc%\n", file_name);
+		ft_print_errno(f->argv_temp, file_name); // some bug is here it isnt right errno value
 		return (NULL);
+	}
 	if (!(files_arr = (char **)malloc(sizeof(char *) * (files_nb + 1))))
 		return (NULL);
 	if (!(dir_stream = opendir(file_name)))
@@ -59,15 +63,29 @@ char **ft_write_to_arr(char *file_name, t_ls *f)
 	return (files_arr);
 }
 
-int ft_dirwalk(char *dir_name, char **argv, void (*print)(char *, t_ls *), t_ls *f)
+static int join_dirs(char **files_arr, unsigned int *i, char **next_dir, char *dir_name)
+{
+	char *temp;
+
+	if (ft_strncmp(files_arr[(*i)], ".", 2) == 0)
+		(*i)++;
+	if (ft_strncmp(files_arr[(*i)], "..", 3) == 0)
+		(*i)++;
+	if (!(files_arr[(*i)]))
+		return (1);
+	temp = ft_strjoin(dir_name, "/");
+	*next_dir = ft_strjoin(temp, files_arr[(*i)]);
+	free(temp);
+	(*i) += 1;
+	return (OK);
+}
+
+int ft_dirwalk(char *dir_name, char **argv, void (*print)(char **, t_ls *), t_ls *f)
 {
 	char *next_dir;
-	char *temp;
 	char **files_arr;
 	unsigned int i;
-	unsigned int k;
 
-	k = 0;
 	i = 0;
 	if (!dir_name || !dir_name[0])
 		return (OK);
@@ -81,19 +99,11 @@ int ft_dirwalk(char *dir_name, char **argv, void (*print)(char *, t_ls *), t_ls 
 	if ((f->arg_nb > 2 || ft_arr_len(files_arr) > 0) && f->first_dir == 0)
 		ft_printf("%cyan%%s:%eoc%\n", dir_name);
 	ft_ascii_sort(files_arr);
-	while (files_arr[k])
-		print(files_arr[k++], f);
+	print(files_arr, f);
 	while (files_arr[i])
 	{
-		if (ft_strncmp(files_arr[i], ".", 2) == 0)
-			i++;
-		if (ft_strncmp(files_arr[i], "..", 3) == 0)
-			i++;
-		if (!(files_arr[i]))
+		if (join_dirs(files_arr, &i, &next_dir, dir_name) == 1)
 			return (OK);
-		temp = ft_strjoin(dir_name, "/");
-		next_dir = ft_strjoin(temp, files_arr[i++]);
-		free(temp);
 		if (ft_isdir(next_dir))
 		{
 			write(1, "\n", 1);
@@ -105,3 +115,5 @@ int ft_dirwalk(char *dir_name, char **argv, void (*print)(char *, t_ls *), t_ls 
 	ft_free_tab((void**)files_arr);
 	return (OK);
 }
+
+

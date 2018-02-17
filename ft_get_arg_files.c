@@ -37,7 +37,7 @@ char **ft_get_arg_files(int argc, char **argv, char double_minus)
 	i = 0;
 	j = 1;
 	tmp = argc;
-	if (!(files_names = (char **)malloc((argc - 1) * sizeof(char *))))
+	if (!(files_names = (char **)malloc((argc + 1) * sizeof(char *))))
 		return (NULL);
 	if (argc == 1)
 		files_names[i++] = ft_strdup(".");

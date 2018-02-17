@@ -69,20 +69,33 @@ void ft_error_first(char **argv, char **arg_files, t_ls *f)
 	}
 }
 
-void ft_files_second(char **arg_files, t_ls *f, void (*print)(char *, t_ls *))
+void ft_files_second(char **arg_files, t_ls *f, void (*print)(char **, t_ls *))
 {
 	unsigned int i;
+	unsigned int k;
+	char **temp_arg_files;
 
 	i = 0;
+	k = 0;
+	temp_arg_files = (char **)malloc((ft_arr_len(arg_files) + 1) * (sizeof(char *)));
 	while (arg_files[i])
 	{
 		if (ft_get_file_type(arg_files[i]) == '-')
 		{
-			print(arg_files[i], f);
+			temp_arg_files[k] = ft_strdup(arg_files[i]);
 			arg_files[i][0] = '\0';
+			k++;
 		}
 		i++;
 	}
+	temp_arg_files[k] = NULL;
+	if (ft_strncmp(arg_files[0], ".", 2) == 0 && arg_files[1] == NULL)
+	{
+		ft_free_tab((void**)temp_arg_files);
+		return ;
+	}
+	print(temp_arg_files, f);
+	ft_free_tab((void**)temp_arg_files);
 }
 
 int ft_print_errno(char **argv, char *file_name)

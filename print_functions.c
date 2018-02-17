@@ -12,16 +12,32 @@
 
 #include "ft_ls.h"
 
-void ft_one_print(char *file, t_ls *data)
+void ft_one_print(char **file, t_ls *data)
 {
-	ft_printf("%s\n", file);
+	unsigned int i;
+
+	i = 0;
+	while (file[i])
+	{
+		ft_printf("%s\n", file[i]);
+		i++;
+	}
 	data->big_g = 0;
 }
 
-void ft_long_print(char *file, t_ls *data)
+void ft_long_print(char **files, t_ls *data)
 {
-	file++;
+	struct stat status;
+	unsigned int i;
+
+	i = 0;
+	lstat(files[i], &status);
 	data->big_g = 0;
-	ft_printf("long print func\n");
-	ft_printf("later:D\n");
+
+	while (files[i])
+	{
+		ft_printf("total: %d\n", status.st_blocks);
+		ft_printf("%s\n", files[i]);
+		i++;
+	}
 }
