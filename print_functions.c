@@ -22,6 +22,11 @@ void ft_one_print(char **file, t_ls *data)
 		ft_printf("%s\n", file[i]);
 		i++;
 	}
+//	if (data->arg_nb > 1 && data->first_dir == 1)
+//	{
+//		data->first_dir = 0;
+//		write(1, "\n", 1);
+//	}
 	data->big_g = 0;
 }
 

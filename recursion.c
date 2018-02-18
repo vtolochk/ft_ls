@@ -43,8 +43,13 @@ char **ft_write_to_arr(char *file_name, t_ls *f)
 	i = 0;
 	if (((files_nb = ft_files_nb(file_name, f)) == -1))
 	{
-		ft_printf("%cyan%%s:%eoc%\n", file_name);
-		ft_print_errno(f->argv_temp, file_name); // some bug is here it isnt right errno value
+		if (f->arg_nb > 1)
+			ft_printf("%s\n", file_name);
+		ft_print_errno(f->argv_temp, file_name);
+		f->next_dir = 1;
+		f->first_dir = 0;
+//		if (f->arg_nb > 1)
+//			write(1, "\n", 1);
 		return (NULL);
 	}
 	if (!(files_arr = (char **)malloc(sizeof(char *) * (files_nb + 1))))
@@ -90,21 +95,30 @@ int ft_dirwalk(char *dir_name, char **argv, void (*print)(char **, t_ls *), t_ls
 	if (!dir_name || !dir_name[0])
 		return (OK);
 	if (!(files_arr = ft_write_to_arr(dir_name, f)))
+	{
+		if (f->next_dir == 1)
+			return (OK);
 		return (FAIL);
+	}
 	if (*files_arr == NULL)
 	{
 		ft_printf("%cyan%%s:%eoc%\n", dir_name);
+		if (f->arg_nb > 1 && f->first_dir == 1 && f->double_minus == 0)
+			write(1, "\n", 1);
+		f->first_dir = 0;
 		return (OK);
 	}
-	if ((f->arg_nb > 2 || ft_arr_len(files_arr) > 0) && f->first_dir == 0)
-		ft_printf("%cyan%%s:%eoc%\n", dir_name);
+	//if (((f->arg_nb > 2) || ft_arr_len(files_arr) > 1))
+	//if (ft_arr_len(files_arr) > 0 && (f->first_dir == 0))
+	if ((ft_arr_len(files_arr) > 0 || f->arg_nb > 2) && (f->first_dir == 0))
+		ft_printf("%blue%%s:%eoc%\n", dir_name);
 	ft_ascii_sort(files_arr);
 	print(files_arr, f);
 	while (files_arr[i])
 	{
 		if (join_dirs(files_arr, &i, &next_dir, dir_name) == 1)
 			return (OK);
-		if (ft_isdir(next_dir))
+		if (ft_isdir(next_dir, f, files_arr))
 		{
 			write(1, "\n", 1);
 			f->first_dir = 0;

@@ -29,8 +29,6 @@ void ft_dirs_third(char **arg_files, void (*print)(char **, t_ls *), t_ls *f)
 			dir_files = ft_write_to_arr(arg_files[i], f);
 			ft_ascii_sort(dir_files);
 			print(dir_files, f);
-			if (arg_files[i + 1])
-				write(1, "\n", 1);
 			ft_free_tab((void**)dir_files);
 			arg_files[i][0] = '\0';
 		}

@@ -36,13 +36,14 @@ typedef  struct s_ls
 	char files_second;
 	unsigned int arg_nb;
 	char **argv_temp;
+	char next_dir;
 }               t_ls;
 
 unsigned int ft_arr_len(char **arr);
 void ft_one_print(char **file, t_ls *data);
 void ft_long_print(char **file, t_ls *data);
 int ft_ls(char **argv, char **arg_files, t_ls *flags, void (*func)(char **, t_ls *));
-char ft_isdir(char *dir);
+char ft_isdir(char *dir, t_ls *f, char **files_arr);
 int ft_dirwalk(char *dir_name, char **argv, void (*print)(char **, t_ls *), t_ls *f);
 int ft_print_errno(char **argv, char *file_name);
 char **ft_get_arg_files(int argc, char **argv, char flag_special);

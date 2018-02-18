@@ -37,9 +37,10 @@ char ft_get_file_type(char *file_name)
 	return ('e');
 }
 
-char ft_isdir(char *dir)
+char ft_isdir(char *dir, t_ls *f, char **files_arr)
 {
 	DIR *ptr;
+	char *temp;
 
 	if ((ptr = opendir(dir)))
 	{
@@ -47,6 +48,21 @@ char ft_isdir(char *dir)
 		{
 			closedir(ptr);
 			return (1);
+		}
+	}
+	else
+	{
+		if (ft_get_file_type(dir) == 'd')
+		{
+			if (f->first_dir == 0 || ft_arr_len(files_arr) > 1)
+			{
+				write(1, "\n", 1);
+				write(1, dir, ft_strlen(dir));
+				write(1, ":\n", 2);
+				f->first_dir = 0;
+			}
+			temp = ft_strrchr(dir, '/');
+			ft_print_errno(f->argv_temp, ++temp);
 		}
 	}
 	return (0);

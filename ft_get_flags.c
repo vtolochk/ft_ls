@@ -25,6 +25,7 @@ static void ft_flags_init(t_ls **flg)
 	(*flg)->big_g = 0;
 	(*flg)->first_dir = 1;
 	(*flg)->files_second = 0;
+	(*flg)->next_dir = 0;
 }
 
 static int ft_fill_struct(t_ls **flgs, char *tmp)
