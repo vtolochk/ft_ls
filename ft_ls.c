@@ -32,14 +32,14 @@ int ft_ls(char **argv, char **arg_files, t_ls *flags, void (*func)(char **, t_ls
 	{
 		while (arg_files[i])
 		{
-			if (ft_dirwalk(arg_files[i++], argv, func, flags) == FAIL)
+			if (ft_dirwalk(arg_files[i++], argv, func, &flags) == FAIL)
 				return (FAIL);
 			if (arg_files[i] && arg_files[i][0])
 				write(1, "\n", 1);
 		}
 	}
 	else
-		ft_dirs_third(arg_files, func, flags);
+		ft_dirs_third(arg_files, func, &flags);
 	ft_free_tab((void**)arg_files);
 	return (OK);
 }
