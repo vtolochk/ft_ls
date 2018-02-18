@@ -28,6 +28,7 @@ void ft_dirs_third(char **arg_files, void (*print)(char **, t_ls *), t_ls **f)
 				ft_printf("%s:\n", arg_files[i]);
 			dir_files = ft_write_to_arr(arg_files[i], f);
 			ft_ascii_sort(dir_files);
+			(*f)->path_to_dir = ft_strdup(arg_files[i]);
 			print(dir_files, *f);
 			ft_free_tab((void**)dir_files);
 			arg_files[i][0] = '\0';

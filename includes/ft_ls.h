@@ -19,6 +19,15 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#define NO_ACCESS "---"
+#define EACCESS "--x"
+#define W_ACCESS "-w-"
+#define WE_ACCESS "-wx"
+#define R_ACCESS "r--"
+#define RE_ACCESS "r-x"
+#define RW_ACCESS "rw-"
+#define RWE_ACCESS "rwe"
+
 #define FAIL 1
 #define OK 0
 
@@ -37,6 +46,7 @@ typedef  struct s_ls
 	unsigned int arg_nb;
 	char **argv_temp;
 	char next_dir;
+	char *path_to_dir;
 }               t_ls;
 
 unsigned int ft_arr_len(char **arr);
@@ -44,7 +54,7 @@ void ft_one_print(char **file, t_ls *data);
 void ft_long_print(char **file, t_ls *data);
 int ft_ls(char **argv, char **arg_files, t_ls *flags, void (*func)(char **, t_ls *));
 char ft_isdir(char *dir, t_ls *f, char **files_arr);
-int ft_dirwalk(char *dir_name, char **argv, void (*print)(char **, t_ls *), t_ls **f);
+int ft_dirwalk(char *dir_name, void (*print)(char **, t_ls *), t_ls **f);
 int ft_print_errno(char **argv, char *file_name);
 char **ft_get_arg_files(int argc, char **argv, char flag_special);
 long int ft_files_nb(char *file_name, t_ls *f);

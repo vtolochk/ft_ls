@@ -12,62 +12,6 @@
 
 #include "ft_ls.h"
 
-long int ft_files_nb(char *file_name, t_ls *f)
-{
-	DIR *dir_stream;
-	unsigned int files_nb;
-	struct dirent *dir;
-
-	files_nb = 0;
-	if (!(dir_stream = opendir(file_name)))
-		return (-1);
-	while ((dir = readdir(dir_stream)))
-	{
-		if (f->all == 0 && dir->d_name[0] == '.')
-			continue ;
-		files_nb++;
-	}
-	if ((closedir(dir_stream) == -1))
-		return (-1);
-	return (files_nb);
-}
-
-char **ft_write_to_arr(char *file_name, t_ls **f)
-{
-	DIR *dir_stream;
-	struct dirent *dir;
-	char **files_arr;
-	unsigned int i;
-	long int files_nb;
-
-	i = 0;
-	if (((files_nb = ft_files_nb(file_name, *f)) == -1))
-	{
-		if ((*f)->arg_nb > 1)
-			ft_printf("%s\n", file_name);
-		ft_print_errno((*f)->argv_temp, file_name);
-		(*f)->next_dir = 1;
-		(*f)->first_dir = 0;
-//		if (f->arg_nb > 1)
-//			write(1, "\n", 1);
-		return (NULL);
-	}
-	if (!(files_arr = (char **)malloc(sizeof(char *) * (files_nb + 1))))
-		return (NULL);
-	if (!(dir_stream = opendir(file_name)))
-		return (ft_free_tab((void **)files_arr));
-	while ((dir = readdir(dir_stream)) != NULL)
-	{
-		if ((*f)->all == 0 && dir->d_name[0] == '.')
-			continue ;
-		files_arr[i++] = ft_strdup(dir->d_name);
-	}
-	files_arr[i] = 0;
-	if (closedir(dir_stream) == -1)
-		return (ft_free_tab((void **)files_arr));
-	return (files_arr);
-}
-
 static int join_dirs(char **files_arr, unsigned int *i, char **next_dir, char *dir_name)
 {
 	char *temp;
@@ -85,7 +29,25 @@ static int join_dirs(char **files_arr, unsigned int *i, char **next_dir, char *d
 	return (OK);
 }
 
-int ft_dirwalk(char *dir_name, char **argv, void (*print)(char **, t_ls *), t_ls **f)
+static int if_dir_is_empty(char *dir_name, t_ls **f)
+{
+	ft_printf("%cyan%%s:%eoc%\n", dir_name);
+	if ((*f)->arg_nb > 1 && (*f)->first_dir == 1 && (*f)->double_minus == 0)
+		write(1, "\n", 1);
+	(*f)->first_dir = 0;
+	return (OK);
+}
+
+static void print_and_sort(t_ls **f, char *dir_name, char **files_arr, void (*print)(char **, t_ls *))
+{
+	if ((ft_arr_len(files_arr) > 0 || (*f)->arg_nb > 2) && ((*f)->first_dir == 0 || (*f)->arg_nb != 1))
+		ft_printf("%blue%%s:%eoc%\n", dir_name);
+	ft_ascii_sort(files_arr);
+	(*f)->path_to_dir = ft_strdup(dir_name);
+	print(files_arr, *f);
+}
+
+int ft_dirwalk(char *dir_name, void (*print)(char **, t_ls *), t_ls **f)
 {
 	char *next_dir;
 	char **files_arr;
@@ -95,23 +57,10 @@ int ft_dirwalk(char *dir_name, char **argv, void (*print)(char **, t_ls *), t_ls
 	if (!dir_name || !dir_name[0])
 		return (OK);
 	if (!(files_arr = ft_write_to_arr(dir_name, f)))
-	{
-		if ((*f)->next_dir == 1)
-			return (OK);
-		return (FAIL);
-	}
+		return ((*f)->next_dir == 1 ? OK : FAIL);
 	if (*files_arr == NULL)
-	{
-		ft_printf("%cyan%%s:%eoc%\n", dir_name);
-		if ((*f)->arg_nb > 1 && (*f)->first_dir == 1 && (*f)->double_minus == 0)
-			write(1, "\n", 1);
-		(*f)->first_dir = 0;
-		return (OK);
-	}
-	if ((ft_arr_len(files_arr) > 0 || (*f)->arg_nb > 2) && ((*f)->first_dir == 0 ||  (*f)->arg_nb != 1))
-		ft_printf("%blue%%s:%eoc%\n", dir_name);
-	ft_ascii_sort(files_arr);
-	print(files_arr, *f);
+		return (if_dir_is_empty(dir_name, f));
+	print_and_sort(f, dir_name, files_arr, print);
 	while (files_arr[i])
 	{
 		if (join_dirs(files_arr, &i, &next_dir, dir_name) == 1)
@@ -120,7 +69,7 @@ int ft_dirwalk(char *dir_name, char **argv, void (*print)(char **, t_ls *), t_ls
 		{
 			write(1, "\n", 1);
 			(*f)->first_dir = 0;
-			ft_dirwalk(next_dir, argv, print, f);
+			ft_dirwalk(next_dir, print, f);
 		}
 		free(next_dir);
 	}
