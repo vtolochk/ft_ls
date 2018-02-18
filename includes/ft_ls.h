@@ -20,13 +20,13 @@
 #include <sys/stat.h>
 
 #define NO_ACCESS "---"
-#define EACCESS "--x"
+#define X_ACCESS "--x"
 #define W_ACCESS "-w-"
-#define WE_ACCESS "-wx"
+#define WX_ACCESS "-wx"
 #define R_ACCESS "r--"
-#define RE_ACCESS "r-x"
+#define RX_ACCESS "r-x"
 #define RW_ACCESS "rw-"
-#define RWE_ACCESS "rwe"
+#define RWX_ACCESS "rwx"
 
 #define FAIL 1
 #define OK 0

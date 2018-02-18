@@ -27,7 +27,7 @@ unsigned int ft_get_blocks(char **files, t_ls *data, unsigned int *link_width)
 	{
 		temp = ft_strjoin(data->path_to_dir, files[i++]);
 		lstat(temp, &status);
-		temp_width = ft_strlen(ft_itoa(status.st_nlink));
+		temp_width = (unsigned int)ft_strlen(ft_itoa(status.st_nlink));
 		if (*link_width <= temp_width)
 			*link_width = temp_width;
 		blocks += status.st_blocks;
@@ -39,19 +39,39 @@ unsigned int ft_get_blocks(char **files, t_ls *data, unsigned int *link_width)
 void print_file_mode(char *file, mode_t st_mode)
 {
 	unsigned int i;
-	char *file_mode;
+	unsigned int k;
+	char c;
 	char *temp;
 
-	i = 0;
-	file_mode = ft_strnew(10);
+	k = 0;
 	temp = ft_itoa_base(st_mode, 8);
-	i = ft_strlen(temp);
-	if (temp[--i] == 0)
-		file_mode = ft_strjoin(NO_ACCESS, "");
-
-	ft_printf("%s", file_mode);
-	ft_printf(" %o ::", st_mode);
-	free(file_mode);
+	i = (unsigned int)ft_strlen(temp) - 4;
+	//c = ft_get_file_type(file); // it doesnt work:( need to create another function :(
+	file++;
+	c = 'd';
+	write(1, &c, 1);
+	//
+	while (k != 3)
+	{
+		i++;
+		if (temp[i] == '0')
+			write(1, NO_ACCESS, 3);
+		else if (temp[i] == '1')
+			write(1, X_ACCESS, 3);
+		else if (temp[i] == '2')
+			write(1, W_ACCESS, 3);
+		else if (temp[i] == '3')
+			write(1, WX_ACCESS, 3);
+		else if (temp[i] == '4')
+			write(1, R_ACCESS, 3);
+		else if (temp[i] == '5')
+			write(1, RX_ACCESS, 3);
+		else if (temp[i] == '6')
+			write(1, RW_ACCESS, 3);
+		else if (temp[i] == '7')
+			write(1, RWX_ACCESS, 3);
+		k++;
+	}
 }
 
 void ft_long_print(char **files, t_ls *data)
