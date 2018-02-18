@@ -88,6 +88,11 @@ static void print_file_mode(char *file, mode_t st_mode, unsigned int k, unsigned
 	free(temp);
 }
 
+static void ft_print_owner_and_group(char *file)
+{
+	return ;
+}
+
 void ft_long_print(char **files, t_ls *data)
 {
 	unsigned int i;
