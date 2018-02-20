@@ -50,6 +50,8 @@ typedef  struct s_ls
 	char **argv_temp;
 	char next_dir;
 	char *path_to_dir;
+	char one_minus;
+	char go_via_link;
 }               t_ls;
 
 unsigned int ft_arr_len(char **arr);
@@ -59,7 +61,7 @@ int ft_ls(char **argv, char **arg_files, t_ls *flags, void (*func)(char **, t_ls
 char ft_isdir(char *dir, t_ls *f, char **files_arr);
 int ft_dirwalk(char *dir_name, void (*print)(char **, t_ls *), t_ls **f);
 int ft_print_errno(char **argv, char *file_name);
-char **ft_get_arg_files(int argc, char **argv, char flag_special);
+char **ft_get_arg_files(int argc, char **argv, t_ls *f);
 long int ft_files_nb(char *file_name, t_ls *f);
 int ft_get_flags(int argc, char **argv, t_ls *flgs);
 char ft_get_file_type(char *file_name);

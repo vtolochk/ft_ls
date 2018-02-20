@@ -22,6 +22,8 @@ void ft_dirs_third(char **arg_files, void (*print)(char **, t_ls *), t_ls **f)
 	{
 		while (arg_files[i] && !(arg_files[i][0]))
 			i++;
+		if (arg_files[i] == NULL)
+			return ;
 		if (ft_get_file_type(arg_files[i]) == 'd')
 		{
 			if (ft_arr_len(arg_files) > 1)

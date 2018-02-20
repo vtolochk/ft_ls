@@ -17,6 +17,8 @@ void ft_one_print(char **file, t_ls *data)
 	unsigned int i;
 
 	i = 0;
+	if (!file)
+		return ;
 	while (file[i])
 	{
 		ft_printf("%s\n", file[i]);

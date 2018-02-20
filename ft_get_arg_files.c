@@ -12,22 +12,24 @@
 
 #include "ft_ls.h"
 
-static void ft_while_flags(int *argc, char **argv, unsigned int *j, char flag)
+static void ft_while_flags(int *argc, char **argv, unsigned int *j, t_ls *f)
 {
+	if (f->one_minus == 1)
+		return ;
 	while (*argc != 1 && (argv[(*j)][0] == '-'))
 	{
 		if (argv[(*j)++][1] == '-')
 		{
 			(*j)++;
-			if (flag)
+			if (f->double_minus == 1)
 				(*j)--;
-			break;
+			break ;
 		}
 		(*argc)--;
 	}
 }
 
-char **ft_get_arg_files(int argc, char **argv, char double_minus)
+char **ft_get_arg_files(int argc, char **argv, t_ls *f)
 {
 	unsigned int i;
 	unsigned int j;
@@ -41,7 +43,7 @@ char **ft_get_arg_files(int argc, char **argv, char double_minus)
 		return (NULL);
 	if (argc == 1)
 		files_names[i++] = ft_strdup(".");
-	ft_while_flags(&argc, argv, &j, double_minus);
+	ft_while_flags(&argc, argv, &j, f);
 	if (argc == 1 && tmp != 1)
 		files_names[i++] = ft_strdup(".");
 	while (argc != 1)

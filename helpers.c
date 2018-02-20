@@ -96,7 +96,7 @@ void ft_files_second(char **arg_files, t_ls *f, void (*print)(char **, t_ls *))
 	temp_arg_files = (char **)malloc((ft_arr_len(arg_files) + 1) * (sizeof(char *)));
 	while (arg_files[i])
 	{
-		if (ft_get_file_type(arg_files[i]) == '-')
+		if (ft_get_file_type(arg_files[i]) == '-' || ft_get_file_type(arg_files[i]) == 'c')
 		{
 			temp_arg_files[k] = ft_strdup(arg_files[i]);
 			arg_files[i][0] = '\0';

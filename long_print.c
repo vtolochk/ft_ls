@@ -32,7 +32,8 @@ static void write_blocks(char **files, t_ls *data, unsigned int *link_width)
 		blocks += status.st_blocks;
 		free(temp);
 	}
-	ft_printf("total %d\n", blocks);
+	if (data->arg_nb > 0)
+		ft_printf("total %d\n", blocks);
 }
 
 static void write_file_type(char *file)
@@ -40,7 +41,7 @@ static void write_file_type(char *file)
 	char c;
 	struct stat status;
 
-	c = 0;
+	c = '-';
 	lstat(file, &status);
 	if (S_ISBLK(status.st_mode))
 		c = 'b';
@@ -65,6 +66,8 @@ static void print_file_mode(char *file, mode_t st_mode, unsigned int k, unsigned
 
 	temp = ft_itoa_base(st_mode, 8);
 	i = (unsigned int)ft_strlen(temp) - 4;
+	if ((int)i < 0)
+		return ;
 	write_file_type(file);
 	while (k++ != 3)
 	{
@@ -101,11 +104,13 @@ static unsigned int ft_get_user_indent(char **files, t_ls *data)
 	indentation = 0;
 	while (files[i++])
 	{
-		str = ft_strjoin(data->path_to_dir, files[i++]);
+		str = ft_strjoin(data->path_to_dir, files[i]);
 		lstat(str, &status);
 		user_id = getpwuid(status.st_uid);
-		if (indentation <= (temp = (unsigned int)ft_strlen(user_id->pw_name)))
-			indentation = temp;
+		if (str)
+			if (indentation <= (temp = (unsigned int)ft_strlen(user_id->pw_name)))
+				indentation = temp;
+		ft_strdel(&str);
 	}
 	return (indentation);
 }
@@ -126,8 +131,10 @@ static unsigned int ft_get_grg_indent(char **files, t_ls *data)
 		str = ft_strjoin(data->path_to_dir, files[i++]);
 		lstat(str, &status);
 		group_id = getgrgid(status.st_gid);
-		if (indentation <= (temp = (unsigned int)ft_strlen(group_id->gr_name)))
-			indentation = temp;
+		if (str)
+			if (indentation <= (temp = (unsigned int)ft_strlen(group_id->gr_name)))
+				indentation = temp;
+		ft_strdel(&str);
 	}
 	return (indentation);
 }
@@ -139,8 +146,8 @@ static void ft_print_owner_and_group(struct stat status, unsigned int usr_indent
 
 	user_id = getpwuid(status.st_uid);
 	group_id = getgrgid(status.st_gid);
-	ft_printf("%-*s ",  usr_indent + 1, user_id->pw_name);
-	ft_printf("%-*s", grg_indent + 1, group_id->gr_name);
+	ft_printf("%-*s ", usr_indent + 1, user_id->pw_name);
+	ft_printf("%-*s", grg_indent, group_id->gr_name);
 }
 
 static unsigned int ft_get_size_width(char **files, t_ls *data)
@@ -168,17 +175,37 @@ static unsigned int ft_get_size_width(char **files, t_ls *data)
 static void ft_print_time(struct stat status)
 {
 	char *time_str;
+	time_t cur_time;
 
+	cur_time = time(NULL);
 	time_str = ctime(&status.st_mtimespec.tv_sec);
 	if (time_str)
 	{
 		time_str += 4;
-		time_str[12] = '\0';
+		if (cur_time -  status.st_mtimespec.tv_sec > 15778463)
+		{
+			time_str[7] = '\0';
+			ft_printf("%s", time_str);
+			time_str += 15;
+			time_str[5] = '\0';
+			ft_printf("%s ", time_str);
+		}
+		else
+		{
+			time_str[12] = '\0';
+			ft_printf("%s ", time_str);
+		}
 	}
-	ft_printf("%s ", time_str);
 }
 
+char *ft_get_link_value(char *file)
+{
+	char *buf;
 
+	buf = ft_strnew(127);
+	readlink(file, buf, 126);
+	return (buf);
+}
 
 void ft_long_print(char **files, t_ls *data)
 {
@@ -214,7 +241,7 @@ void ft_long_print(char **files, t_ls *data)
 		ft_print_time(status);
 		ft_printf("%s", files[i++]);// file name
 		if (S_ISLNK(status.st_mode))
-			ft_printf(" -> \n"); // link
+			ft_printf(" -> %s\n", ft_get_link_value(temp));
 		else
 			write(1, "\n", 1);
 		free(temp);

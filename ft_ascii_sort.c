@@ -31,6 +31,8 @@ unsigned int ft_arr_len(char **arr)
 
 	i = 0;
 	len = 0;
+	if (!arr)
+		return (0);
 	while (arr[i++])
 		len++;
 	return (len);
