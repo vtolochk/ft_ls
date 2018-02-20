@@ -18,6 +18,9 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <pwd.h>
+#include <grp.h>
+#include <time.h>
 
 #define NO_ACCESS "---"
 #define X_ACCESS "--x"

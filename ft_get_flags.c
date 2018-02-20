@@ -26,6 +26,7 @@ static void ft_flags_init(t_ls **flg)
 	(*flg)->first_dir = 1;
 	(*flg)->files_second = 0;
 	(*flg)->next_dir = 0;
+	(*flg)->path_to_dir = ft_strdup("./");
 }
 
 static int ft_fill_struct(t_ls **flgs, char *tmp)

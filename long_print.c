@@ -88,35 +88,135 @@ static void print_file_mode(char *file, mode_t st_mode, unsigned int k, unsigned
 	free(temp);
 }
 
-static void ft_print_owner_and_group(char *file)
+static unsigned int ft_get_user_indent(char **files, t_ls *data)
 {
-	return ;
+	unsigned int i;
+	unsigned int temp;
+	unsigned int indentation;
+	struct passwd *user_id;
+	struct stat status;
+	char *str;
+
+	i = 0;
+	indentation = 0;
+	while (files[i++])
+	{
+		str = ft_strjoin(data->path_to_dir, files[i++]);
+		lstat(str, &status);
+		user_id = getpwuid(status.st_uid);
+		if (indentation <= (temp = (unsigned int)ft_strlen(user_id->pw_name)))
+			indentation = temp;
+	}
+	return (indentation);
 }
+
+static unsigned int ft_get_grg_indent(char **files, t_ls *data)
+{
+	unsigned int i;
+	unsigned int temp;
+	unsigned int indentation;
+	struct group *group_id;
+	struct stat status;
+	char *str;
+
+	i = 0;
+	indentation = 0;
+	while (files[i])
+	{
+		str = ft_strjoin(data->path_to_dir, files[i++]);
+		lstat(str, &status);
+		group_id = getgrgid(status.st_gid);
+		if (indentation <= (temp = (unsigned int)ft_strlen(group_id->gr_name)))
+			indentation = temp;
+	}
+	return (indentation);
+}
+
+static void ft_print_owner_and_group(struct stat status, unsigned int usr_indent, unsigned int grg_indent)
+{
+	struct passwd *user_id;
+	struct group *group_id;
+
+	user_id = getpwuid(status.st_uid);
+	group_id = getgrgid(status.st_gid);
+	ft_printf("%-*s ",  usr_indent + 1, user_id->pw_name);
+	ft_printf("%-*s", grg_indent + 1, group_id->gr_name);
+}
+
+static unsigned int ft_get_size_width(char **files, t_ls *data)
+{
+	char *temp;
+	unsigned int i;
+	struct stat status;
+	unsigned int size_width;
+	unsigned int temp_width;
+
+	i = 0;
+	size_width = 0;
+	while (files[i])
+	{
+		temp = ft_strjoin(data->path_to_dir, files[i++]);
+		lstat(temp, &status);
+		temp_width = (unsigned int)ft_strlen(ft_itoa((int)status.st_size));
+		if (size_width <= temp_width)
+			size_width = temp_width;
+		free(temp);
+	}
+	return (size_width);
+}
+
+static void ft_print_time(struct stat status)
+{
+	char *time_str;
+
+	time_str = ctime(&status.st_mtimespec.tv_sec);
+	if (time_str)
+	{
+		time_str += 4;
+		time_str[12] = '\0';
+	}
+	ft_printf("%s ", time_str);
+}
+
+
 
 void ft_long_print(char **files, t_ls *data)
 {
 	unsigned int i;
 	unsigned int link_width;
+	unsigned int size_width;
+	unsigned int grg_width;
+	unsigned int usr_width;
 	struct stat status;
 	char *temp;
 
 	i = 0;
 	link_width = 0;
+	size_width = 0;
 	if (files[i])
 	{
 		temp = data->path_to_dir;
 		data->path_to_dir = ft_strjoin(data->path_to_dir, "/");
 		free(temp);
 		write_blocks(files, data, &link_width);
+		size_width = ft_get_size_width(files, data);
+		grg_width = ft_get_grg_indent(files, data);
+		usr_width = ft_get_user_indent(files, data);
 	}
 	while (files[i])
 	{
 		temp = ft_strjoin(data->path_to_dir, files[i]);
-		lstat(temp, &status);
+		lstat(temp, &status);                                   // when should i use stat???
 		print_file_mode(temp, status.st_mode, 0, 0);
 		ft_printf(" %*u ", link_width + 1, status.st_nlink);
-		ft_printf("%s\n", files[i++]);// file name
+		ft_print_owner_and_group(status, usr_width, grg_width);
+		ft_printf("%*lld ", size_width + 2, status.st_size);
+		ft_print_time(status);
+		ft_printf("%s", files[i++]);// file name
+		if (S_ISLNK(status.st_mode))
+			ft_printf(" -> \n"); // link
+		else
+			write(1, "\n", 1);
 		free(temp);
 	}
-	free(data->path_to_dir);
 }
