@@ -31,11 +31,15 @@ int ft_ls(char **argv, char **arg_files, t_ls *flags, void (*func)(char **, t_ls
 	if (flags->recursion == 1)
 	{
 		while (arg_files[i])
-			if (ft_dirwalk(arg_files[i++], argv, func, flags) == FAIL)
+		{
+			if (ft_dirwalk(arg_files[i++], func, &flags) == FAIL)
 				return (FAIL);
+			if (arg_files[i] && arg_files[i][0])
+				write(1, "\n", 1);
+		}
 	}
 	else
-		ft_dirs_third(arg_files, func, flags);
+		ft_dirs_third(arg_files, func, &flags);
 	ft_free_tab((void**)arg_files);
 	return (OK);
 }
@@ -50,7 +54,7 @@ int main(int argc, char **argv)
 	if (ft_get_flags(argc, argv, &flags))
 		return (FAIL);
 	func_ptr = ft_get_print_function(&flags);
-	arg_files = ft_get_arg_files(argc, argv, flags.double_minus);
+	arg_files = ft_get_arg_files(argc, argv, &flags);
 	ft_ascii_sort(arg_files);
 	if (ft_ls(argv, arg_files, &flags, func_ptr) == FAIL)
 		return (FAIL);
