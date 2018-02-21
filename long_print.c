@@ -225,6 +225,14 @@ void ft_long_print(char **files, t_ls *data)
 		temp = data->path_to_dir;
 		data->path_to_dir = ft_strjoin(data->path_to_dir, "/");
 		free(temp);
+		if (lstat(ft_strjoin(data->path_to_dir, files[i]), &status) == -1) // new thing
+		{
+			if (files[i][0] == '/')
+			{
+				free(data->path_to_dir);
+				data->path_to_dir = ft_strdup("/");
+			}
+		} // end of this
 		write_blocks(files, data, &link_width);
 		size_width = ft_get_size_width(files, data);
 		grg_width = ft_get_grg_indent(files, data);

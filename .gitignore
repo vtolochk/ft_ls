@@ -1,7 +1,11 @@
 /cmake-build-debug
+zzz*
+/*
 /Libft/*.o
 /Libft/ft_printf/*.o
+-*
 /.idea
+diff*
 .*
 *.a
 *.o

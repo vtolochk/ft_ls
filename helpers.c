@@ -37,11 +37,23 @@ char ft_get_file_type(char *file_name)
 	return ('e');
 }
 
+static int ft_is_link(char *dir)
+{
+	struct stat status;
+
+	lstat(dir, &status);
+	if (S_ISLNK(status.st_mode))
+		return (0);
+	return (1);
+}
+
 char ft_isdir(char *dir, t_ls *f, char **files_arr)
 {
 	DIR *ptr;
 	char *temp;
 
+	if (ft_is_link(dir) == 0)
+		return (0);
 	if ((ptr = opendir(dir)))
 	{
 		if (readdir(ptr))
