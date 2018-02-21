@@ -24,22 +24,24 @@ static void ft_swap(char **arr, int index_1, int index_2)
 	arr[index_2] = tmp[0];
 }
 
-static int ft_timecmp(char *file_1, char *file_2)
+static int ft_timecmp(char *file_1, char *file_2, t_ls *f)
 {
-	time_t time_1;
-	time_t time_2;
-	struct stat status;
+	struct stat status_1;
+	struct stat status_2;
+	char *temp;
 
-	lstat(file_1, &status);
-	time_1 = time(&status.st_mtimespec.tv_sec);
-	lstat(file_2, &status);
-	time_2 = time(&status.st_mtimespec.tv_sec);
-	if (time_1 > time_2)
+	temp = ft_strjoin(f->path_to_dir, file_1);
+	lstat(temp, &status_1);
+	free(temp);
+	temp = ft_strjoin(f->path_to_dir, file_2);
+	lstat(temp, &status_2);
+	free(temp);
+	if (status_1.st_mtimespec.tv_sec >= status_2.st_mtimespec.tv_sec)
 		return (1);
 	return (0);
 }
 
-void ft_time_sort(char **arr)
+void ft_time_sort(char **arr, t_ls *f)
 {
 	unsigned int    i;
 	unsigned int    j;
@@ -52,9 +54,9 @@ void ft_time_sort(char **arr)
 	{
 		j = 0;
 		flag = 0;
-		while (j != len)
+		while (j != (len - i))
 		{
-			if (ft_timecmp(arr[j], arr[j+1]))
+			if (ft_timecmp(arr[j], arr[j + 1], f) == 1)
 			{
 				ft_swap(arr, j, j + 1);
 				flag = 1;

@@ -225,14 +225,14 @@ void ft_long_print(char **files, t_ls *data)
 		temp = data->path_to_dir;
 		data->path_to_dir = ft_strjoin(data->path_to_dir, "/");
 		free(temp);
-		if (lstat(ft_strjoin(data->path_to_dir, files[i]), &status) == -1) // new thing
+		if (lstat(ft_strjoin(data->path_to_dir, files[i]), &status) == -1)
 		{
 			if (files[i][0] == '/')
 			{
 				free(data->path_to_dir);
 				data->path_to_dir = ft_strdup("/");
 			}
-		} // end of this
+		}
 		write_blocks(files, data, &link_width);
 		size_width = ft_get_size_width(files, data);
 		grg_width = ft_get_grg_indent(files, data);
@@ -249,7 +249,7 @@ void ft_long_print(char **files, t_ls *data)
 			ft_printf(" %u,   %u ", status.st_rdev >> 24 & 0xff, status.st_rdev & 0xffffff);
 		ft_printf("%*lld ", size_width + 2, status.st_size);
 		ft_print_time(status);
-		ft_printf("%s", files[i++]);// file name
+		ft_printf("%s", files[i++]); // file name
 		if (S_ISLNK(status.st_mode))
 			ft_printf(" -> %s\n", ft_get_link_value(temp));
 		else

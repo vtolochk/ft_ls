@@ -42,9 +42,9 @@ static void print_and_sort(t_ls **f, char *dir_name, char **files_arr, void (*pr
 {
 	if ((ft_arr_len(files_arr) > 0 || (*f)->arg_nb > 2) && ((*f)->first_dir == 0 || (*f)->arg_nb != 1))
 		ft_printf("%s:\n", dir_name);
+	if ((*f)->time_sort == 1)
+		ft_time_sort(files_arr, *f);
 	ft_ascii_sort(files_arr);
-//	if ((*f)->time_sort == 1)
-//		ft_time_sort(files_arr);
 	(*f)->path_to_dir = ft_strdup(dir_name);
 	print(files_arr, *f);
 }

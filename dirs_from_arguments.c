@@ -29,6 +29,8 @@ void ft_dirs_third(char **arg_files, void (*print)(char **, t_ls *), t_ls **f)
 			if (ft_arr_len(arg_files) > 1)
 				ft_printf("%s:\n", arg_files[i]);
 			dir_files = ft_write_to_arr(arg_files[i], f);
+			if ((*f)->time_sort == 1)
+				ft_time_sort(dir_files, *f);
 			ft_ascii_sort(dir_files);
 			(*f)->path_to_dir = ft_strdup(arg_files[i]);
 			print(dir_files, *f);

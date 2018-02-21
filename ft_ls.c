@@ -55,6 +55,8 @@ int main(int argc, char **argv)
 		return (FAIL);
 	func_ptr = ft_get_print_function(&flags);
 	arg_files = ft_get_arg_files(argc, argv, &flags);
+	if (flags.time_sort == 1)
+		ft_time_sort(arg_files, &flags);
 	ft_ascii_sort(arg_files);
 	if (ft_ls(argv, arg_files, &flags, func_ptr) == FAIL)
 		return (FAIL);

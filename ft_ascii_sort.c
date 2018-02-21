@@ -51,7 +51,7 @@ void ft_ascii_sort(char **arr)
 	{
 		j = 0;
 		flag = 0;
-		while (j != len)
+		while (j != len - i)
 		{
 			if (ft_strcmp(arr[j], arr[j+1]) > 0)
 			{
