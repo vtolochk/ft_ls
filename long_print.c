@@ -182,7 +182,7 @@ static void ft_print_time(struct stat status)
 	if (time_str)
 	{
 		time_str += 4;
-		if (cur_time -  status.st_mtimespec.tv_sec > 15778463)
+		if ((cur_time -  status.st_mtimespec.tv_sec > 15778463) || cur_time < status.st_mtimespec.tv_sec)
 		{
 			time_str[7] = '\0';
 			ft_printf("%s", time_str);
@@ -245,6 +245,8 @@ void ft_long_print(char **files, t_ls *data)
 		print_file_mode(temp, status.st_mode, 0, 0);
 		ft_printf(" %*u ", link_width + 1, status.st_nlink);
 		ft_print_owner_and_group(status, usr_width, grg_width);
+		if (S_ISBLK(status.st_mode) || S_ISCHR(status.st_mode))
+			ft_printf(" %u,   %u ", status.st_rdev >> 24 & 0xff, status.st_rdev & 0xffffff);
 		ft_printf("%*lld ", size_width + 2, status.st_size);
 		ft_print_time(status);
 		ft_printf("%s", files[i++]);// file name
