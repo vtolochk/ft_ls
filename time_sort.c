@@ -12,59 +12,93 @@
 
 #include "ft_ls.h"
 
-static void ft_swap(char **arr, int index_1, int index_2)
-{
-	char *tmp[2];
-
-	tmp[0] = ft_strdup(arr[index_1]);
-	tmp[1] = ft_strdup(arr[index_2]);
-	free(arr[index_1]);
-	free(arr[index_2]);
-	arr[index_1] = tmp[1];
-	arr[index_2] = tmp[0];
-}
-
-static int ft_timecmp(char *file_1, char *file_2, t_ls *f)
+static int ft_timecmp(char *file_1, char *file_2, t_ls *f, char *arg_path)
 {
 	struct stat status_1;
 	struct stat status_2;
 	char *temp;
 
 	temp = ft_strjoin(f->path_to_dir, file_1);
-	lstat(temp, &status_1);
+	if (lstat(temp, &status_1) == -1)
+	{
+		free(temp);
+		temp = ft_strjoin(arg_path, "/");
+		temp = ft_strjoin(temp, file_1);
+		lstat(temp, &status_1);
+	}
 	free(temp);
 	temp = ft_strjoin(f->path_to_dir, file_2);
-	lstat(temp, &status_2);
+	if (lstat(temp, &status_2) == -1)
+	{
+		free(temp);
+		temp = ft_strjoin(arg_path, "/");
+		temp = ft_strjoin(temp, file_2);
+		lstat(temp, &status_2);
+	}
 	free(temp);
-	if (status_1.st_mtimespec.tv_sec >= status_2.st_mtimespec.tv_sec)
+	if (status_1.st_mtimespec.tv_sec < status_2.st_mtimespec.tv_sec)
 		return (1);
+	else if (status_1.st_mtimespec.tv_sec == status_2.st_mtimespec.tv_sec)
+	{
+		if (status_1.st_mtimespec.tv_nsec < status_2.st_mtimespec.tv_nsec)
+			return (1);
+		else if (status_1.st_mtimespec.tv_nsec == status_2.st_mtimespec.tv_nsec)
+			return (0);
+	}
 	return (0);
 }
 
-void ft_time_sort(char **arr, t_ls *f)
+static void ft_rev_time(char **arr, t_ls *f, char *arg_path, unsigned int len)
+{
+	unsigned int    i;
+	unsigned int    j;
+	char            *tmp;
+
+	i = 0;
+	while (i != len - 1)
+	{
+		j = 0;
+		while (j != len - i - 1)
+		{
+			if (ft_timecmp(arr[j], arr[j + 1], f, arg_path) == 0)
+			{
+				tmp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+void ft_time_sort(char **arr, t_ls *f, char *arg_path)
 {
 	unsigned int    i;
 	unsigned int    j;
 	unsigned int    len;
-	char            flag;
+	char            *tmp;
 
 	i = 0;
 	len = ft_arr_len(arr);
+	if (f->reverse)
+	{
+		ft_rev_time(arr, f, arg_path, len);
+		return ;
+	}
 	while (i != len - 1)
 	{
 		j = 0;
-		flag = 0;
-		while (j != (len - i))
+		while (j != len - i - 1)
 		{
-			if (ft_timecmp(arr[j], arr[j + 1], f) == 1)
+			if (ft_timecmp(arr[j], arr[j + 1], f, arg_path))
 			{
-				ft_swap(arr, j, j + 1);
-				flag = 1;
+				tmp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = tmp;
 			}
 			j++;
 		}
-		if (!flag)
-			return ;
 		i++;
 	}
 }

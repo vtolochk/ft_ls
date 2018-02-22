@@ -107,7 +107,7 @@ static unsigned int ft_get_user_indent(char **files, t_ls *data)
 		str = ft_strjoin(data->path_to_dir, files[i]);
 		lstat(str, &status);
 		user_id = getpwuid(status.st_uid);
-		if (str)
+		if (str && user_id)
 			if (indentation <= (temp = (unsigned int)ft_strlen(user_id->pw_name)))
 				indentation = temp;
 		ft_strdel(&str);
@@ -131,7 +131,7 @@ static unsigned int ft_get_grg_indent(char **files, t_ls *data)
 		str = ft_strjoin(data->path_to_dir, files[i++]);
 		lstat(str, &status);
 		group_id = getgrgid(status.st_gid);
-		if (str)
+		if (str && group_id)
 			if (indentation <= (temp = (unsigned int)ft_strlen(group_id->gr_name)))
 				indentation = temp;
 		ft_strdel(&str);

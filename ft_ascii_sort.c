@@ -12,18 +12,6 @@
 
 #include "ft_ls.h"
 
-static void ft_swap(char **arr, int index_1, int index_2)
-{
-	char *tmp[2];
-
-	tmp[0] = ft_strdup(arr[index_1]);
-	tmp[1] = ft_strdup(arr[index_2]);
-	free(arr[index_1]);
-	free(arr[index_2]);
-	arr[index_1] = tmp[1];
-	arr[index_2] = tmp[0];
-}
-
 unsigned int ft_arr_len(char **arr)
 {
 	unsigned int i;
@@ -38,30 +26,57 @@ unsigned int ft_arr_len(char **arr)
 	return (len);
 }
 
-void ft_ascii_sort(char **arr)
+static void ft_reverse_ascii(char **arr, unsigned int len)
+{
+	unsigned int    i;
+	unsigned int    j;
+	char            *temp;
+
+	i = 0;
+	while (i != len - 1)
+	{
+		j = 0;
+		while (j != len - i - 1)
+		{
+			if (ft_strcmp(arr[j], arr[j+1]) < 0)
+			{
+				temp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = temp;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+void ft_ascii_sort(char **arr, char reverse)
 {
 	unsigned int    i;
 	unsigned int    j;
 	unsigned int    len;
-	char            flag;
+	char            *temp;
 
 	i = 0;
 	len = ft_arr_len(arr);
+	if (reverse)
+	{
+		ft_reverse_ascii(arr, len);
+		return ;
+	}
 	while (i != len - 1)
 	{
 		j = 0;
-		flag = 0;
-		while (j != len - i)
+		while (j != len - i - 1)
 		{
 			if (ft_strcmp(arr[j], arr[j+1]) > 0)
 			{
-				ft_swap(arr, j, j + 1);
-				flag = 1;
+				temp = arr[j];
+				arr[j] = arr[j + 1];
+				arr[j + 1] = temp;
 			}
 			j++;
 		}
-		if (!flag)
-			return ;
 		i++;
 	}
 }

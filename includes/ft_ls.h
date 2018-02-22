@@ -65,11 +65,11 @@ char **ft_get_arg_files(int argc, char **argv, t_ls *f);
 long int ft_files_nb(char *file_name, t_ls *f);
 int ft_get_flags(int argc, char **argv, t_ls *flgs);
 char ft_get_file_type(char *file_name);
-void ft_ascii_sort(char **arr);
+void ft_ascii_sort(char **arr, char reverse);
 void ft_error_first(char **argv, char **arg_files, t_ls *f);
 void ft_files_second (char **arg_files, t_ls *f, void (*print)(char **, t_ls *));
 void ft_dirs_third(char **arg_files, void (*print)(char **, t_ls *), t_ls **f);
 char **ft_write_to_arr(char *file_name, t_ls **f);
-void ft_time_sort(char **arr, t_ls *f);
+void ft_time_sort(char **arr, t_ls *f, char *arg_path);
 
 #endif
