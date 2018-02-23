@@ -44,7 +44,7 @@ static int ft_timecmp(char *file_1, char *file_2, char *arg_path, t_ls *f)
 		if (status_1.st_mtimespec.tv_nsec < status_2.st_mtimespec.tv_nsec)
 			return (1);
 		else if (status_1.st_mtimespec.tv_nsec == status_2.st_mtimespec.tv_nsec &&
-				(f->recursion == 1 || f->reverse == 1))
+				(f->recursion == 1 && f->reverse == 1))
 			return (1);
 		else if (status_1.st_mtimespec.tv_nsec == status_2.st_mtimespec.tv_nsec)
 			return (0);
