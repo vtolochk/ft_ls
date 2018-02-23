@@ -12,13 +12,13 @@
 
 #include "ft_ls.h"
 
-static int ft_timecmp(char *file_1, char *file_2, t_ls *f, char *arg_path)
+static int ft_timecmp(char *file_1, char *file_2, char *arg_path)
 {
 	struct stat status_1;
 	struct stat status_2;
 	char *temp;
 
-	temp = ft_strjoin(f->path_to_dir, file_1);
+	temp = ft_strjoin(arg_path, file_1);
 	if (lstat(temp, &status_1) == -1)
 	{
 		free(temp);
@@ -27,7 +27,7 @@ static int ft_timecmp(char *file_1, char *file_2, t_ls *f, char *arg_path)
 		lstat(temp, &status_1);
 	}
 	free(temp);
-	temp = ft_strjoin(f->path_to_dir, file_2);
+	temp = ft_strjoin(arg_path, file_2);
 	if (lstat(temp, &status_2) == -1)
 	{
 		free(temp);
@@ -43,12 +43,12 @@ static int ft_timecmp(char *file_1, char *file_2, t_ls *f, char *arg_path)
 		if (status_1.st_mtimespec.tv_nsec < status_2.st_mtimespec.tv_nsec)
 			return (1);
 		else if (status_1.st_mtimespec.tv_nsec == status_2.st_mtimespec.tv_nsec)
-			return (0);
+			return (1);
 	}
 	return (0);
 }
 
-static void ft_rev_time(char **arr, t_ls *f, char *arg_path, unsigned int len)
+static void ft_rev_time(char **arr, char *arg_path, unsigned int len)
 {
 	unsigned int    i;
 	unsigned int    j;
@@ -60,7 +60,7 @@ static void ft_rev_time(char **arr, t_ls *f, char *arg_path, unsigned int len)
 		j = 0;
 		while (j != len - i - 1)
 		{
-			if (ft_timecmp(arr[j], arr[j + 1], f, arg_path) == 0)
+			if (ft_timecmp(arr[j], arr[j + 1], arg_path) == 0)
 			{
 				tmp = arr[j];
 				arr[j] = arr[j + 1];
@@ -83,7 +83,7 @@ void ft_time_sort(char **arr, t_ls *f, char *arg_path)
 	len = ft_arr_len(arr);
 	if (f->reverse)
 	{
-		ft_rev_time(arr, f, arg_path, len);
+		ft_rev_time(arr,  arg_path, len);
 		return ;
 	}
 	while (i != len - 1)
@@ -91,7 +91,7 @@ void ft_time_sort(char **arr, t_ls *f, char *arg_path)
 		j = 0;
 		while (j != len - i - 1)
 		{
-			if (ft_timecmp(arr[j], arr[j + 1], f, arg_path))
+			if (ft_timecmp(arr[j], arr[j + 1], arg_path))
 			{
 				tmp = arr[j];
 				arr[j] = arr[j + 1];
