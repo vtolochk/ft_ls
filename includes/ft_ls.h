@@ -22,15 +22,6 @@
 #include <grp.h>
 #include <time.h>
 
-#define NO_ACCESS "---"
-#define X_ACCESS "--x"
-#define W_ACCESS "-w-"
-#define WX_ACCESS "-wx"
-#define R_ACCESS "r--"
-#define RX_ACCESS "r-x"
-#define RW_ACCESS "rw-"
-#define RWX_ACCESS "rwx"
-
 #define FAIL 1
 #define OK 0
 

@@ -54,8 +54,11 @@ static int ft_fill_struct(t_ls **flgs, char *tmp)
 		   tmp++;
 		else
 		{
-			ft_printf("./ft_ls: illegal option -- %c\nusage"
-            ": ./ft_ls [-GRalrt1] [file ...]\n", *tmp);
+			write(2, "./ft_ls: illegal option -- ", 28);
+			write(2, tmp, 1);
+			write(2, "\nusage: ./ft_ls [-GRalrt1] [file ...]\n", 39);
+//			ft_printf("./ft_ls: illegal option -- %c\nusage"
+//            ": ./ft_ls [-GRalrt1] [file ...]\n", *tmp);
 			return (FAIL);
 		}
 	}

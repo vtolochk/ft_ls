@@ -60,35 +60,75 @@ static void write_file_type(char *file)
 	write(1, &c, 1);
 }
 
-static void print_file_mode(char *file, mode_t st_mode, unsigned int k, unsigned int i)
+static void print_file_mode(char *file, mode_t st_mode)
 {
-	char *temp;
+	char *str;
 
-	temp = ft_itoa_base(st_mode, 8);
-	i = (unsigned int)ft_strlen(temp) - 4;
-	if ((int)i < 0)
-		return ;
+	str = ft_strnew(9);
+	ft_memset(str, '-', 9);
 	write_file_type(file);
-	while (k++ != 3)
+	if (st_mode & S_IRWXU && st_mode & S_ISUID)
 	{
-		if (temp[++i] == '0')
-			write(1, NO_ACCESS, 3);
-		else if (temp[i] == '1')
-			write(1, X_ACCESS, 3);
-		else if (temp[i] == '2')
-			write(1, W_ACCESS, 3);
-		else if (temp[i] == '3')
-			write(1, WX_ACCESS, 3);
-		else if (temp[i] == '4')
-			write(1, R_ACCESS, 3);
-		else if (temp[i] == '5')
-			write(1, RX_ACCESS, 3);
-		else if (temp[i] == '6')
-			write(1, RW_ACCESS, 3);
-		else if (temp[i] == '7')
-			write(1, RWX_ACCESS, 3);
+		str[0] = 'r';
+		str[1] = 'w';
+		if (st_mode & S_ISUID && st_mode & S_IXUSR)
+			str[2] = 's';
+		else if (st_mode & S_ISUID && !(st_mode & S_IXUSR))
+			str[2] = 'S';
+		else
+			str[2] = 'x';
 	}
-	free(temp);
+	else
+	{
+		if (st_mode & S_IRUSR)
+			str[0] = 'r';
+		if (st_mode & S_IWUSR)
+			str[1] = 'w';
+		if (st_mode & S_IXUSR)
+			str[2] = 'x';
+	}
+	if (st_mode & S_IRWXG && st_mode & S_ISGID)
+	{
+		str[3] = 'r';
+		str[4] = 'w';
+		if (st_mode & S_ISGID && st_mode & S_IXGRP)
+			str[5] = 's';
+		else if (st_mode & S_ISGID && !(st_mode & S_IXGRP))
+			str[5] = 'S';
+		else
+			str[5] = 'x';
+	}
+	else
+	{
+		if (st_mode & S_IRGRP)
+			str[3] = 'r';
+		if (st_mode & S_IWGRP)
+			str[4] = 'w';
+		if (st_mode & S_IXGRP)
+			str[5] = 'x';
+	}
+	if (st_mode & S_IRWXO && st_mode & S_ISVTX)
+	{
+		str[6] = 'r';
+		str[7] = 'w';
+		if (st_mode & S_ISVTX && st_mode & S_IXOTH)
+			str[8] = 't';
+		else if (st_mode & S_ISVTX && !(st_mode & S_IXOTH))
+			str[8] = 'T';
+		else
+			str[8] = 'x';
+	}
+	else
+	{
+		if (st_mode & S_IROTH)
+			str[6] = 'r';
+		if (st_mode & S_IWOTH)
+			str[7] = 'w';
+		if (st_mode & S_IXOTH)
+			str[8] = 'x';
+	}
+	write(1, str, 9);
+	free(str);
 }
 
 static unsigned int ft_get_user_indent(char **files, t_ls *data)
@@ -242,7 +282,7 @@ void ft_long_print(char **files, t_ls *data)
 	{
 		temp = ft_strjoin(data->path_to_dir, files[i]);
 		lstat(temp, &status);                                   // when should i use stat???
-		print_file_mode(temp, status.st_mode, 0, 0);
+		print_file_mode(temp, status.st_mode);
 		ft_printf(" %*u ", link_width + 1, status.st_nlink);
 		ft_print_owner_and_group(status, usr_width, grg_width);
 		if (S_ISBLK(status.st_mode) || S_ISCHR(status.st_mode))
