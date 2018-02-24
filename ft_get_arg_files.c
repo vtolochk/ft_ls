@@ -23,6 +23,8 @@ static void ft_while_flags(int *argc, char **argv, unsigned int *j, t_ls *f)
 			(*j)++;
 			if (f->double_minus == 1)
 				(*j)--;
+			if (f->third_minus == 1)
+				(*j) -= 2;
 			break ;
 		}
 		(*argc)--;

@@ -186,8 +186,8 @@ static void ft_print_owner_and_group(struct stat status, unsigned int usr_indent
 
 	user_id = getpwuid(status.st_uid);
 	group_id = getgrgid(status.st_gid);
-	ft_printf("%-*s ", usr_indent + 1, user_id->pw_name);
-	ft_printf("%-*s", grg_indent, group_id->gr_name);
+	ft_printf("%-*s", usr_indent, user_id->pw_name);
+	ft_printf("  %-*s", grg_indent, group_id->gr_name);
 }
 
 static unsigned int ft_get_size_width(char **files, t_ls *data)

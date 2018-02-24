@@ -35,6 +35,7 @@ typedef  struct s_ls
 	char one;
 	char big_g;
 	char double_minus;
+	char third_minus;
 	char first_dir;
 	char files_second;
 	unsigned int arg_nb;

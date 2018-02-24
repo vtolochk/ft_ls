@@ -29,6 +29,7 @@ static void ft_flags_init(t_ls **flg)
 	(*flg)->path_to_dir = ft_strdup("./");
 	(*flg)->one_minus = 0;
 	(*flg)->printed = 0;
+	(*flg)->third_minus = 0;
 }
 
 static int ft_fill_struct(t_ls **flgs, char *tmp)
@@ -74,7 +75,14 @@ int ft_get_flags(int argc, char **argv, t_ls *flgs)
 			(*argv)++;
 			if (**argv == '-')
 			{
-				(*argv)--;
+				(*argv)++;
+				if (**argv == '-')
+				{
+					(*argv) -= 2;
+					flgs->third_minus = 1;
+					break ;
+				}
+				(*argv) -= 2;
 				flgs->double_minus = 1;
 				break ;
 			}
