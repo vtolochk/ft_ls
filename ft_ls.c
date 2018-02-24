@@ -19,12 +19,12 @@ static void (*ft_get_print_function(t_ls *flags))(char **f_arr, t_ls *flg)
 	return (ft_one_print);
 }
 
-int ft_ls(char **argv, char **arg_files, t_ls *flags, void (*func)(char **, t_ls *))
+int ft_ls(char **arg_files, t_ls *flags, void (*func)(char **, t_ls *))
 {
 	unsigned int i;
 
 	i = 0;
-	ft_error_first(argv, arg_files, flags);
+	ft_error_first(arg_files, flags);
 	ft_files_second(arg_files, flags, func);
 	while (arg_files[flags->arg_nb])
 		flags->arg_nb++;
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 	ft_ascii_sort(arg_files, flags.reverse);
 	if (flags.time_sort == 1)
 		ft_time_sort(arg_files, &flags, NULL);
-	if (ft_ls(argv, arg_files, &flags, func_ptr) == FAIL)
+	if (ft_ls(arg_files, &flags, func_ptr) == FAIL)
 		return (FAIL);
 	return (OK);
 }

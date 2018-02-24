@@ -74,13 +74,13 @@ char ft_isdir(char *dir, t_ls *f, char **files_arr)
 				f->first_dir = 0;
 			}
 			temp = ft_strrchr(dir, '/');
-			ft_print_errno(f->argv_temp, ++temp);
+			ft_print_errno(++temp);
 		}
 	}
 	return (0);
 }
 
-void ft_error_first(char **argv, char **arg_files, t_ls *f)
+void ft_error_first(char **arg_files, t_ls *f)
 {
 	int i;
 
@@ -90,7 +90,7 @@ void ft_error_first(char **argv, char **arg_files, t_ls *f)
 	{
 		if ((ft_get_file_type(arg_files[i])) == 'e')
 		{
-			ft_print_errno(argv, arg_files[i]);
+			ft_print_errno(arg_files[i]);
 			arg_files[i][0] = '\0';
 		}
 		i++;
@@ -153,9 +153,9 @@ void ft_files_second(char **arg_files, t_ls *f, void (*print)(char **, t_ls *))
 	ft_free_tab((void**)temp_arg_files);
 }
 
-int ft_print_errno(char **argv, char *file_name)
+int ft_print_errno(char *file_name)
 {
-	write(2, argv[0], ft_strlen(argv[0]));
+	write(2, "ls", 2);
 	write(2, ": ", 2);
 	write(2, file_name, ft_strlen(file_name));
 	write(2, ": ", 2);

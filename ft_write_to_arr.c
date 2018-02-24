@@ -45,7 +45,7 @@ char **ft_write_to_arr(char *file_name, t_ls **f)
 	{
 		if ((*f)->arg_nb > 1)
 			ft_printf("%s\n", file_name);
-		ft_print_errno((*f)->argv_temp, file_name);
+		ft_print_errno(file_name);
 		(*f)->next_dir = 1;
 		(*f)->first_dir = 0;
 		return (NULL);

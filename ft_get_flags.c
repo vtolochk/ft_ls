@@ -85,7 +85,7 @@ int ft_get_flags(int argc, char **argv, t_ls *flgs)
 				if (**argv)
 				{
 					(*argv)--;
-					write(2, "./ft_ls: illegal option -- ", 28);
+					write(2, "ls: illegal option -- ", 23);
 					write(2, &(**argv), 1);
 					write(2, "\nusage: ./ft_ls [-GRalrt1] [file ...]\n", 39);
 					return (FAIL);
