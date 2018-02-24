@@ -28,7 +28,7 @@ static void ft_flags_init(t_ls **flg)
 	(*flg)->next_dir = 0;
 	(*flg)->path_to_dir = ft_strdup("./");
 	(*flg)->one_minus = 0;
-	(*flg)->go_via_link = 0;
+	(*flg)->printed = 0;
 }
 
 static int ft_fill_struct(t_ls **flgs, char *tmp)
@@ -57,8 +57,6 @@ static int ft_fill_struct(t_ls **flgs, char *tmp)
 			write(2, "./ft_ls: illegal option -- ", 28);
 			write(2, tmp, 1);
 			write(2, "\nusage: ./ft_ls [-GRalrt1] [file ...]\n", 39);
-//			ft_printf("./ft_ls: illegal option -- %c\nusage"
-//            ": ./ft_ls [-GRalrt1] [file ...]\n", *tmp);
 			return (FAIL);
 		}
 	}

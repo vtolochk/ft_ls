@@ -58,7 +58,8 @@ void ft_ascii_sort(char **arr, char reverse)
 	char            *temp;
 
 	i = 0;
-	len = ft_arr_len(arr);
+	if ((len = ft_arr_len(arr)) == 0)
+		return ;
 	if (reverse)
 	{
 		ft_reverse_ascii(arr, len);

@@ -20,6 +20,8 @@ static int ft_timecmp(char *file_1, char *file_2, char *arg_path, t_ls *f)
 
 	arg_path = ft_strjoin(arg_path, "/");
 	temp = ft_strjoin(arg_path, file_1);
+	if (!temp)
+		temp = ft_strdup(file_1);
 	if (lstat(temp, &status_1) == -1)
 	{
 		free(temp);
@@ -29,6 +31,8 @@ static int ft_timecmp(char *file_1, char *file_2, char *arg_path, t_ls *f)
 	}
 	free(temp);
 	temp = ft_strjoin(arg_path, file_2);
+	if (!temp)
+		temp = ft_strdup(file_2);
 	if (lstat(temp, &status_2) == -1)
 	{
 		free(temp);

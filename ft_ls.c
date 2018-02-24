@@ -34,7 +34,7 @@ int ft_ls(char **argv, char **arg_files, t_ls *flags, void (*func)(char **, t_ls
 		{
 			if (ft_dirwalk(arg_files[i++], func, &flags) == FAIL)
 				return (FAIL);
-			if (arg_files[i] && arg_files[i][0])
+			if (arg_files[i] && arg_files[i][0] && flags->printed == 1)
 				write(1, "\n", 1);
 		}
 	}

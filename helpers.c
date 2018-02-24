@@ -123,6 +123,8 @@ void ft_files_second(char **arg_files, t_ls *f, void (*print)(char **, t_ls *))
 		return ;
 	}
 	print(temp_arg_files, f);
+	if (i > k && k)
+		write(1, "\n", 1);
 	ft_free_tab((void**)temp_arg_files);
 }
 

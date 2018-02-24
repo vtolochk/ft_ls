@@ -42,7 +42,7 @@ typedef  struct s_ls
 	char next_dir;
 	char *path_to_dir;
 	char one_minus;
-	char go_via_link;
+	char printed;
 }               t_ls;
 
 unsigned int ft_arr_len(char **arr);

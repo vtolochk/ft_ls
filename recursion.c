@@ -67,6 +67,7 @@ int ft_dirwalk(char *dir_name, void (*print)(char **, t_ls *), t_ls **f)
 	if (*files_arr == NULL)
 		return (if_dir_is_empty(dir_name, f));
 	print_and_sort(f, dir_name, files_arr, print);
+	(*f)->printed = 1;
 	while (files_arr[i])
 	{
 		if (join_dirs(files_arr, &i, &next_dir, dir_name) == 1)
