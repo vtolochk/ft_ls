@@ -20,6 +20,8 @@ static int join_dirs(char **files_arr, unsigned int *i, char **next_dir, char *d
 		(*i)++;
 	if (ft_strncmp(files_arr[(*i)], "..", 3) == 0)
 		(*i)++;
+	if (ft_strncmp(files_arr[(*i)], ".", 2) == 0)
+		(*i)++;
 	if (!(files_arr[(*i)]))
 		return (1);
 	temp = ft_strjoin(dir_name, "/");
@@ -31,7 +33,7 @@ static int join_dirs(char **files_arr, unsigned int *i, char **next_dir, char *d
 
 static int if_dir_is_empty(char *dir_name, t_ls **f)
 {
-	ft_printf("%cyan%%s:%eoc%\n", dir_name);
+	ft_printf("%s:\n", dir_name);
 	if ((*f)->arg_nb > 1 && (*f)->first_dir == 1 && (*f)->double_minus == 0)
 		write(1, "\n", 1);
 	(*f)->first_dir = 0;
@@ -41,9 +43,13 @@ static int if_dir_is_empty(char *dir_name, t_ls **f)
 static void print_and_sort(t_ls **f, char *dir_name, char **files_arr, void (*print)(char **, t_ls *))
 {
 	if ((ft_arr_len(files_arr) > 0 || (*f)->arg_nb > 2) && ((*f)->first_dir == 0 || (*f)->arg_nb != 1))
-		ft_printf("%blue%%s:%eoc%\n", dir_name);
-	ft_ascii_sort(files_arr);
+		ft_printf("%s:\n", dir_name);
+	ft_ascii_sort(files_arr, (*f)->reverse);
+	if ((*f)->time_sort == 1)
+		ft_time_sort(files_arr, *f, dir_name);
 	(*f)->path_to_dir = ft_strdup(dir_name);
+//	(*f)->path_to_dir = ft_strjoin((*f)->path_to_dir, "/");
+//	(*f)->path_to_dir = ft_strjoin((*f)->path_to_dir, dir_name);
 	print(files_arr, *f);
 }
 

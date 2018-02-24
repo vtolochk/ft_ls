@@ -107,7 +107,7 @@ static unsigned int ft_get_user_indent(char **files, t_ls *data)
 		str = ft_strjoin(data->path_to_dir, files[i]);
 		lstat(str, &status);
 		user_id = getpwuid(status.st_uid);
-		if (str)
+		if (str && user_id)
 			if (indentation <= (temp = (unsigned int)ft_strlen(user_id->pw_name)))
 				indentation = temp;
 		ft_strdel(&str);
@@ -131,7 +131,7 @@ static unsigned int ft_get_grg_indent(char **files, t_ls *data)
 		str = ft_strjoin(data->path_to_dir, files[i++]);
 		lstat(str, &status);
 		group_id = getgrgid(status.st_gid);
-		if (str)
+		if (str && group_id)
 			if (indentation <= (temp = (unsigned int)ft_strlen(group_id->gr_name)))
 				indentation = temp;
 		ft_strdel(&str);
@@ -182,7 +182,7 @@ static void ft_print_time(struct stat status)
 	if (time_str)
 	{
 		time_str += 4;
-		if (cur_time -  status.st_mtimespec.tv_sec > 15778463)
+		if ((cur_time -  status.st_mtimespec.tv_sec > 15778463) || cur_time < status.st_mtimespec.tv_sec)
 		{
 			time_str[7] = '\0';
 			ft_printf("%s", time_str);
@@ -225,6 +225,14 @@ void ft_long_print(char **files, t_ls *data)
 		temp = data->path_to_dir;
 		data->path_to_dir = ft_strjoin(data->path_to_dir, "/");
 		free(temp);
+		if (lstat(ft_strjoin(data->path_to_dir, files[i]), &status) == -1)
+		{
+			if (files[i][0] == '/')
+			{
+				free(data->path_to_dir);
+				data->path_to_dir = ft_strdup("/");
+			}
+		}
 		write_blocks(files, data, &link_width);
 		size_width = ft_get_size_width(files, data);
 		grg_width = ft_get_grg_indent(files, data);
@@ -237,9 +245,11 @@ void ft_long_print(char **files, t_ls *data)
 		print_file_mode(temp, status.st_mode, 0, 0);
 		ft_printf(" %*u ", link_width + 1, status.st_nlink);
 		ft_print_owner_and_group(status, usr_width, grg_width);
+		if (S_ISBLK(status.st_mode) || S_ISCHR(status.st_mode))
+			ft_printf(" %u,   %u ", status.st_rdev >> 24 & 0xff, status.st_rdev & 0xffffff);
 		ft_printf("%*lld ", size_width + 2, status.st_size);
 		ft_print_time(status);
-		ft_printf("%s", files[i++]);// file name
+		ft_printf("%s", files[i++]); // file name
 		if (S_ISLNK(status.st_mode))
 			ft_printf(" -> %s\n", ft_get_link_value(temp));
 		else
