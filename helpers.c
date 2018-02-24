@@ -37,7 +37,7 @@ char ft_get_file_type(char *file_name)
 	return ('e');
 }
 
-static int ft_is_link(char *dir)
+int ft_is_link(char *dir)
 {
 	struct stat status;
 
@@ -97,6 +97,24 @@ void ft_error_first(char **argv, char **arg_files, t_ls *f)
 	}
 }
 
+void ft_get_dir(char **temp_argv, char **arg_files, unsigned int *i, unsigned int *k)
+{
+	char *buf;
+	struct stat inf;
+
+	buf = ft_strnew(127);
+	readlink(arg_files[(*i)], buf, 127);
+	lstat(buf, &inf);
+	if (S_ISDIR(inf.st_mode))
+	{
+		arg_files[(*i)] = buf;
+		return ;
+	}
+	temp_argv[(*k)] = ft_strdup(arg_files[(*i)]);
+	arg_files[(*i)][0] = '\0';
+	(*k)++;
+}
+
 void ft_files_second(char **arg_files, t_ls *f, void (*print)(char **, t_ls *))
 {
 	unsigned int i;
@@ -110,9 +128,16 @@ void ft_files_second(char **arg_files, t_ls *f, void (*print)(char **, t_ls *))
 	{
 		if (ft_get_file_type(arg_files[i]) == '-' || ft_get_file_type(arg_files[i]) == 'c')
 		{
-			temp_arg_files[k] = ft_strdup(arg_files[i]);
-			arg_files[i][0] = '\0';
-			k++;
+			if (ft_is_link(arg_files[i]) == 0 && f->list == 0)
+			{
+				ft_get_dir(temp_arg_files, arg_files, &i, &k);
+			}
+			else
+			{
+				temp_arg_files[k] = ft_strdup(arg_files[i]);
+				arg_files[i][0] = '\0';
+				k++;
+			}
 		}
 		i++;
 	}

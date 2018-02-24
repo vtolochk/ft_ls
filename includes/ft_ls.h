@@ -63,5 +63,6 @@ void ft_files_second (char **arg_files, t_ls *f, void (*print)(char **, t_ls *))
 void ft_dirs_third(char **arg_files, void (*print)(char **, t_ls *), t_ls **f);
 char **ft_write_to_arr(char *file_name, t_ls **f);
 void ft_time_sort(char **arr, t_ls *f, char *arg_path);
+int ft_is_link(char *dir);
 
 #endif
