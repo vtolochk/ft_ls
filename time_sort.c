@@ -88,7 +88,8 @@ void ft_time_sort(char **arr, t_ls *f, char *arg_path)
 	char            *tmp;
 
 	i = 0;
-	len = ft_arr_len(arr);
+	if ((len = ft_arr_len(arr)) == 0)
+		return ;
 	if (f->reverse)
 	{
 		ft_rev_time(arr,  arg_path, len, f);

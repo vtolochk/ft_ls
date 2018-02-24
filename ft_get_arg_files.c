@@ -51,6 +51,8 @@ char **ft_get_arg_files(int argc, char **argv, t_ls *f)
 		files_names[i++] = ft_strdup(argv[j++]);
 		argc--;
 	}
+	if (files_names[0] == NULL)
+		files_names[0] = ft_strdup(".");
 	files_names[i] = NULL;
 	return (files_names);
 }

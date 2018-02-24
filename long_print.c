@@ -222,13 +222,12 @@ static void ft_print_time(struct stat status)
 	if (time_str)
 	{
 		time_str += 4;
-		if ((cur_time -  status.st_mtimespec.tv_sec > 15778463) || cur_time < status.st_mtimespec.tv_sec)
+		if ((cur_time - status.st_mtimespec.tv_sec > 15778463) || cur_time < status.st_mtimespec.tv_sec)
 		{
 			time_str[7] = '\0';
 			ft_printf("%s", time_str);
-			time_str += 15;
-			time_str[5] = '\0';
-			ft_printf("%s ", time_str);
+			time_str += 8;
+			ft_printf(" %d ", ft_atoi(ft_strrchr(time_str, ' ') + 1));
 		}
 		else
 		{
