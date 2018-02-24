@@ -15,7 +15,10 @@
 static void ft_while_flags(int *argc, char **argv, unsigned int *j, t_ls *f)
 {
 	if (f->one_minus == 1)
+	{
+		(*j)++;
 		return ;
+	}
 	while (*argc != 1 && (argv[(*j)][0] == '-'))
 	{
 		if (argv[(*j)++][1] == '-')
