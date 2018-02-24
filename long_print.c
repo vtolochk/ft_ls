@@ -86,6 +86,10 @@ static void print_file_mode(char *file, mode_t st_mode)
 			str[1] = 'w';
 		if (st_mode & S_IXUSR)
 			str[2] = 'x';
+		else if (st_mode & S_ISUID && st_mode & S_IXUSR)
+			str[2] = 's';
+		else if (st_mode & S_ISUID && !(st_mode & S_IXUSR))
+			str[2] = 'S';
 	}
 	if (st_mode & S_IRWXG && st_mode & S_ISGID)
 	{
@@ -106,6 +110,10 @@ static void print_file_mode(char *file, mode_t st_mode)
 			str[4] = 'w';
 		if (st_mode & S_IXGRP)
 			str[5] = 'x';
+		else if (st_mode & S_ISGID && st_mode & S_IXGRP)
+			str[5] = 's';
+		else if (st_mode & S_ISGID && !(st_mode & S_IXGRP))
+			str[5] = 'S';
 	}
 	if (st_mode & S_IRWXO && st_mode & S_ISVTX)
 	{
@@ -126,6 +134,10 @@ static void print_file_mode(char *file, mode_t st_mode)
 			str[7] = 'w';
 		if (st_mode & S_IXOTH)
 			str[8] = 'x';
+		else if (st_mode & S_ISVTX && st_mode & S_IXOTH)
+			str[8] = 't';
+		else if (st_mode & S_ISVTX && !(st_mode & S_IXOTH))
+			str[8] = 'T';
 	}
 	write(1, str, 9);
 	free(str);
