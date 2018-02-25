@@ -59,14 +59,21 @@ char *l_v(char *file)
 void ft_error_first(char **arg_files, t_ls *f)
 {
 	int i;
+	int len;
 
 	i = 0;
+	len = ft_arr_len(arg_files);
 	f->big_g = 0; // u have to color this shit in red :)
 	while (arg_files[i])
 	{
 		if ((ft_get_file_type(arg_files[i])) == 'e')
 		{
 			ft_print_errno(arg_files[i]);
+			arg_files[i][0] = '\0';
+		}
+		if ((ft_get_file_type(arg_files[i])) == 'd' && ft_check_for_perm(arg_files[i]))
+		{
+			ft_print_no_perm(len, arg_files, i);
 			arg_files[i][0] = '\0';
 		}
 		i++;
