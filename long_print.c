@@ -96,6 +96,24 @@ static void ft_print_info(struct stat *s, char *file, int size_width)
 	write(1, file, ft_strlen(file));
 }
 
+static void ft_print_ext_attr(char *file, t_ls *data) //start here please
+{
+	ssize_t i;
+	char buf[100];
+	char buf1[100];
+
+	if (data->ext_attr)
+	{
+		if ((listxattr(file, buf1, sizeof(buf1), XATTR_NOFOLLOW)) > 0)
+		{
+			write(1, "\t", 1);
+			write(1, buf1, ft_strlen(buf1));
+			i = getxattr(file, buf1, buf, sizeof(buf), 0, XATTR_NOFOLLOW);
+			ft_printf("\t%d\n", i);
+		}
+	}
+}
+
 void ft_long_print(char **files, t_ls *data)
 {
 	int i;
@@ -121,6 +139,7 @@ void ft_long_print(char **files, t_ls *data)
 		ft_print_owner_and_group(st, indent[3], indent[2], indent[0]);
 		ft_print_info(&st, files[i++], indent[1]);
 		S_ISLNK(st.st_mode) ? ft_printf(" -> %s\n", l_v(t)) : write(1, "\n", 1);
+		ft_print_ext_attr(t, data);
 		free(t);
 	}
 }

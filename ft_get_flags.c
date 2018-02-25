@@ -30,6 +30,7 @@ static void ft_flags_init(t_ls **flg)
 	(*flg)->one_minus = 0;
 	(*flg)->printed = 0;
 	(*flg)->third_minus = 0;
+	(*flg)->ext_attr = 0;
 }
 
 static int ft_print_illegal(char c)
@@ -58,8 +59,10 @@ static int ft_fill_struct(t_ls **flgs, char *tmp)
 			(*flgs)->one = 1;
 		else if (*tmp == 'G')
 			(*flgs)->big_g = 1;
+		else if (*tmp == '@')
+			(*flgs)->ext_attr = 1;
 		if (*tmp == 'l' || *tmp == 'R' || *tmp == 'a' || *tmp == 'r' ||
-		    *tmp == 't' || *tmp == '1' || *tmp == 'G')
+		    *tmp == 't' || *tmp == '1' || *tmp == 'G' || *tmp == '@')
 		   tmp++;
 		else
 			return (ft_print_illegal(*tmp));

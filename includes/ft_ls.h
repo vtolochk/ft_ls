@@ -35,6 +35,7 @@ typedef  struct s_ls
 	char time_sort;
 	char one;
 	char big_g;
+	char ext_attr;
 	char double_minus;
 	char third_minus;
 	char first_dir;

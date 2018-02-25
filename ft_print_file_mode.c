@@ -125,7 +125,7 @@ void print_file_mode(char *file, mode_t st_mode)
 	ft_fill_user_field(&str, st_mode);
 	ft_fill_grp_field(&str, st_mode);
 	ft_fill_oth_field(&str, st_mode);
-	if (listxattr(file, buf, sizeof(buf), XATTR_NOFOLLOW) > 0)
+	if ((listxattr(file, buf, sizeof(buf), XATTR_NOFOLLOW)) > 0)
 	{
 		str[9] = '@';
 		write(1, str, 10);
