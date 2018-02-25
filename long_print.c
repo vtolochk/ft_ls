@@ -41,11 +41,12 @@ static void write_blocks(char **files, t_ls *data, int *link_width)
 	}
 }
 
-static void ft_print_owner_and_group(struct stat status, int usr_indent, int grg_indent)
+static void ft_print_owner_and_group(struct stat status, int usr_indent, int grg_indent, int link_width)
 {
 	struct passwd *user_id;
 	struct group *group_id;
 
+	ft_printf(" %*u ", link_width + 1, status.st_nlink);
 	user_id = getpwuid(status.st_uid);
 	group_id = getgrgid(status.st_gid);
 	ft_printf("%-*s", usr_indent, user_id->pw_name);
@@ -97,6 +98,15 @@ static void ft_join_dirs(t_ls *f, char **files, struct stat *status)
 	ft_strdel(&temp);
 }
 
+static void ft_print_info(struct stat *status, char *file, int size_width)
+{
+	if (S_ISBLK(status->st_mode) || S_ISCHR(status->st_mode))
+		ft_printf(" %u,   %u ", status->st_rdev >> 24 & 0xff, status->st_rdev & 0xffffff);
+	ft_printf("%*lld ", size_width + 2, status->st_size);
+	ft_print_time(*status);
+	write(1, file, ft_strlen(file));
+}
+
 void ft_long_print(char **files, t_ls *data)
 {
 	int i;
@@ -109,7 +119,7 @@ void ft_long_print(char **files, t_ls *data)
 
 	i = 0;
 	link_width = 0;
-	if (files[i])
+	if (files && files[i])
 	{
 		ft_join_dirs(data, files, &status);
 		write_blocks(files, data, &link_width);
@@ -117,18 +127,13 @@ void ft_long_print(char **files, t_ls *data)
 		grg_width = ft_get_grg_indent(files, data, 0);
 		usr_width = ft_get_user_indent(files, data, 0);
 	}
-	while (files[i])
+	while (files && files[i])
 	{
 		temp = ft_strjoin(data->path_to_dir, files[i]);
 		lstat(temp, &status);
 		print_file_mode(temp, status.st_mode);
-		ft_printf(" %*u ", link_width + 1, status.st_nlink);
-		ft_print_owner_and_group(status, usr_width, grg_width);
-		if (S_ISBLK(status.st_mode) || S_ISCHR(status.st_mode))
-			ft_printf(" %u,   %u ", status.st_rdev >> 24 & 0xff, status.st_rdev & 0xffffff);
-		ft_printf("%*lld ", size_width + 2, status.st_size);
-		ft_print_time(status);
-		write(1, files[i], ft_strlen(files[i]));
+		ft_print_owner_and_group(status, usr_width, grg_width, link_width);
+		ft_print_info(&status, files[i], size_width);
 		i++;
 		if (S_ISLNK(status.st_mode))
 			ft_printf(" -> %s\n", ft_get_link_value(temp));
