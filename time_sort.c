@@ -30,32 +30,20 @@ static void ft_get_time(char *file, char *arg_path, struct stat *status)
 
 static int ft_timecmp(char *file_1, char *file_2, char *arg_path, t_ls *f)
 {
-	struct stat status_1;
-	struct stat status_2;
+	struct stat stat_1;
+	struct stat stat_2;
 	char *temp;
 
 	arg_path = ft_strjoin(arg_path, "/");
 	temp = ft_strjoin(arg_path, file_1);
 	if (!temp)
 		temp = ft_strdup(file_1);
-	ft_get_time(temp, arg_path, &status_1);
+	ft_get_time(temp, arg_path, &stat_1);
 	temp = ft_strjoin(arg_path, file_2);
 	if (!temp)
 		temp = ft_strdup(file_2);
-	ft_get_time(temp, arg_path, &status_2);
-	if (status_1.st_mtimespec.tv_sec < status_2.st_mtimespec.tv_sec)
-		return (1);
-	else if (status_1.st_mtimespec.tv_sec == status_2.st_mtimespec.tv_sec)
-	{
-		if (status_1.st_mtimespec.tv_nsec < status_2.st_mtimespec.tv_nsec)
-			return (1);
-		else if (status_1.st_mtimespec.tv_nsec == status_2.st_mtimespec.tv_nsec &&
-				(f->recursion == 1 && f->reverse == 1))
-			return (1);
-		else if (status_1.st_mtimespec.tv_nsec == status_2.st_mtimespec.tv_nsec)
-			return (0);
-	}
-	return (0);
+	ft_get_time(temp, arg_path, &stat_2);
+	return (ls_time_cmp(stat_1, stat_2, f));
 }
 
 static void ft_swap(char **arr, int j)

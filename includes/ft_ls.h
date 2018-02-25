@@ -58,15 +58,17 @@ int ft_get_flags(int argc, char **argv, t_ls *flgs);
 char ft_get_file_type(char *file_name);
 void ft_ascii_sort(char **arr, char reverse);
 void ft_error_first(char **arg_files, t_ls *f);
-void ft_files_second (char **arg_files, t_ls *f, void (*print)(char **, t_ls *), unsigned int k);
+void ft_files_second (char **arg, t_ls *f, void (*print)(char **, t_ls *), int k);
 void ft_dirs_third(char **arg_f, void (*print)(char **, t_ls *), t_ls **f, int i);
 char **ft_write_to_arr(char *file_name, t_ls **f);
 void ft_time_sort(char **arr, t_ls *f, char *arg_path);
 int ft_is_link(char *dir);
 void print_file_mode(char *file, mode_t st_mode);
-char *lnk_val(char *file);
+char *l_v(char *file);
 unsigned int ft_get_user_indent(char **files, t_ls *data, unsigned int temp);
 unsigned int ft_get_grg_indent(char **files, t_ls *data, unsigned int temp);
 unsigned int ft_get_size_width(char **files, t_ls *data);
+void ft_print_owner_and_group(struct stat s, int usr, int grg, int lnk);
+int ls_time_cmp(struct stat stat_1, struct stat stat_2, t_ls *f);
 
 #endif

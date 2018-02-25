@@ -12,11 +12,13 @@
 
 #include "ft_ls.h"
 
-
-static int skip_errors(int *i, char **arg_f)
+static int  skip_errors(int *i, char **arg_f, char **dir_files)
 {
 	if (!arg_f[(*i)])
+	{
+		ft_free_tab((void**)dir_files);
 		return (1);
+	}
 	(*i)++;
 	while (arg_f[(*i)] && !(arg_f[(*i)][0]))
 		(*i)++;
@@ -27,30 +29,31 @@ static int skip_errors(int *i, char **arg_f)
 	return (0);
 }
 
-void ft_dirs_third(char **arg_f, void (*print)(char **, t_ls *), t_ls **f, int i)
+void        ft_dirs_third(char **a, void (*p)(char **, t_ls *), t_ls **f, int i)
 {
-	char            **dir_files;
+	char    **dir_files;
 
-	while (arg_f[i])
+	while (a[i])
 	{
-		while (arg_f[i] && !(arg_f[i][0]))
+		while (a[i] && !(a[i][0]))
 			i++;
-		if (arg_f[i] == NULL)
+		if (a[i] == NULL)
 			return ;
-		if (ft_get_file_type(arg_f[i]) == 'd')
+		if (ft_get_file_type(a[i]) == 'd')
 		{
-			if (ft_arr_len(arg_f) > 1)
-				ft_printf("%s:\n", arg_f[i]);
-			dir_files = ft_write_to_arr(arg_f[i], f);
+			if (ft_arr_len(a) > 1)
+				ft_printf("%s:\n", a[i]);
+			dir_files = ft_write_to_arr(a[i], f);
 			ft_ascii_sort(dir_files, (*f)->reverse);
 			if ((*f)->time_sort == 1)
-				ft_time_sort(dir_files, *f, arg_f[i]);
-			(*f)->path_to_dir = ft_strdup(arg_f[i]);
-			print(dir_files, *f);
+				ft_time_sort(dir_files, *f, a[i]);
+			ft_strdel(&((*f)->path_to_dir));
+			(*f)->path_to_dir = ft_strdup(a[i]);
+			p(dir_files, *f);
 			ft_free_tab((void**)dir_files);
-			arg_f[i][0] = '\0';
+			a[i][0] = '\0';
 		}
-		if (skip_errors(&i, arg_f))
+		if (skip_errors(&i, a, dir_files))
 			return ;
 	}
 }

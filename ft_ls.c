@@ -12,6 +12,35 @@
 
 #include "includes/ft_ls.h"
 
+int ls_time_cmp(struct stat stat_1, struct stat stat_2, t_ls *f)
+{
+	if (stat_1.st_mtimespec.tv_sec < stat_2.st_mtimespec.tv_sec)
+		return (1);
+	else if (stat_1.st_mtimespec.tv_sec == stat_2.st_mtimespec.tv_sec)
+	{
+		if (stat_1.st_mtimespec.tv_nsec < stat_2.st_mtimespec.tv_nsec)
+			return (1);
+		else if (stat_1.st_mtimespec.tv_nsec == stat_2.st_mtimespec.tv_nsec &&
+		         (f->recursion == 1 && f->reverse == 1))
+			return (1);
+		else if (stat_1.st_mtimespec.tv_nsec == stat_2.st_mtimespec.tv_nsec)
+			return (0);
+	}
+	return (0);
+}
+
+void ft_print_owner_and_group(struct stat s, int usr, int grg, int lnk)
+{
+	struct passwd *user_id;
+	struct group *group_id;
+
+	ft_printf(" %*u ", lnk + 1, s.st_nlink);
+	user_id = getpwuid(s.st_uid);
+	group_id = getgrgid(s.st_gid);
+	ft_printf("%-*s", usr, user_id->pw_name);
+	ft_printf("  %-*s", grg, group_id->gr_name);
+}
+
 static void (*ft_get_print_function(t_ls *flags))(char **f_arr, t_ls *flg)
 {
 	if (flags->list == 1)
@@ -33,7 +62,10 @@ int ft_ls(char **arg_files, t_ls *flags, void (*func)(char **, t_ls *))
 		while (arg_files[i])
 		{
 			if (ft_dirwalk(arg_files[i++], func, &flags) == FAIL)
+			{
+				ft_free_tab((void**)arg_files);
 				return (FAIL);
+			}
 			if (arg_files[i] && arg_files[i][0] && flags->printed == 1)
 				write(1, "\n", 1);
 		}
@@ -41,6 +73,7 @@ int ft_ls(char **arg_files, t_ls *flags, void (*func)(char **, t_ls *))
 	else
 		ft_dirs_third(arg_files, func, &flags, 0);
 	ft_free_tab((void**)arg_files);
+	ft_strdel(&(flags->path_to_dir));
 	return (OK);
 }
 

@@ -58,8 +58,8 @@ static int ft_fill_struct(t_ls **flgs, char *tmp)
 			(*flgs)->one = 1;
 		else if (*tmp == 'G')
 			(*flgs)->big_g = 1;
-		if (*tmp == 'l' || *tmp == 'R' || *tmp == 'a' || *tmp == 'r' || *tmp == 't' ||
-			*tmp == '1' || *tmp == 'G')
+		if (*tmp == 'l' || *tmp == 'R' || *tmp == 'a' || *tmp == 'r' ||
+		    *tmp == 't' || *tmp == '1' || *tmp == 'G')
 		   tmp++;
 		else
 			return (ft_print_illegal(*tmp));

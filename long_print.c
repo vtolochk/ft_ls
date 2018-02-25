@@ -41,18 +41,6 @@ static void write_blocks(char **files, t_ls *data, int *link_width)
 	}
 }
 
-static void ft_print_owner_and_group(struct stat status, int usr_indent, int grg_indent, int link_width)
-{
-	struct passwd *user_id;
-	struct group *group_id;
-
-	ft_printf(" %*u ", link_width + 1, status.st_nlink);
-	user_id = getpwuid(status.st_uid);
-	group_id = getgrgid(status.st_gid);
-	ft_printf("%-*s", usr_indent, user_id->pw_name);
-	ft_printf("  %-*s", grg_indent, group_id->gr_name);
-}
-
 static void ft_print_time(struct stat status)
 {
 	char *time_str;
@@ -63,7 +51,8 @@ static void ft_print_time(struct stat status)
 	if (time_str)
 	{
 		time_str += 4;
-		if ((cur_time - status.st_mtimespec.tv_sec > 15778463) || cur_time < status.st_mtimespec.tv_sec)
+		if ((cur_time - status.st_mtimespec.tv_sec > 15778463) ||
+		    cur_time < status.st_mtimespec.tv_sec)
 		{
 			time_str[7] = '\0';
 			write(1, time_str, ft_strlen(time_str));
@@ -98,12 +87,12 @@ static void ft_join_dirs(t_ls *f, char **files, struct stat *status)
 	ft_strdel(&temp);
 }
 
-static void ft_print_info(struct stat *status, char *file, int size_width)
+static void ft_print_info(struct stat *s, char *file, int size_width)
 {
-	if (S_ISBLK(status->st_mode) || S_ISCHR(status->st_mode))
-		ft_printf(" %u,   %u ", status->st_rdev >> 24 & 0xff, status->st_rdev & 0xffffff);
-	ft_printf("%*lld ", size_width + 2, status->st_size);
-	ft_print_time(*status);
+	if (S_ISBLK(s->st_mode) || S_ISCHR(s->st_mode))
+		ft_printf(" %u,   %u ", s->st_rdev >> 24 & 0xff, s->st_rdev & 0xffffff);
+	ft_printf("%*lld ", size_width + 2, s->st_size);
+	ft_print_time(*s);
 	write(1, file, ft_strlen(file));
 }
 
@@ -111,7 +100,7 @@ void ft_long_print(char **files, t_ls *data)
 {
 	int i;
 	struct stat st;
-	char *tmp;
+	char *t;
 	int indent[4];
 
 	i = 0;
@@ -126,12 +115,12 @@ void ft_long_print(char **files, t_ls *data)
 	}
 	while (files && files[i])
 	{
-		tmp = ft_strjoin(data->path_to_dir, files[i]);
-		lstat(tmp, &st);
-		print_file_mode(tmp, st.st_mode);
+		t = ft_strjoin(data->path_to_dir, files[i]);
+		lstat(t, &st);
+		print_file_mode(t, st.st_mode);
 		ft_print_owner_and_group(st, indent[3], indent[2], indent[0]);
 		ft_print_info(&st, files[i++], indent[1]);
-		S_ISLNK(st.st_mode) ? ft_printf(" -> %s\n", lnk_val(tmp)) : write(1, "\n", 1);
-		free(tmp);
+		S_ISLNK(st.st_mode) ? ft_printf(" -> %s\n", l_v(t)) : write(1, "\n", 1);
+		free(t);
 	}
 }
