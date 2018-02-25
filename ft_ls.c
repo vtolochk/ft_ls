@@ -34,7 +34,7 @@ void ft_print_owner_and_group(struct stat s, int usr, int grg, int lnk)
 	struct passwd *user_id;
 	struct group *group_id;
 
-	ft_printf(" %*u ", lnk + 1, s.st_nlink);
+	ft_printf("%*u ", lnk + 1, s.st_nlink);
 	user_id = getpwuid(s.st_uid);
 	group_id = getgrgid(s.st_gid);
 	ft_printf("%-*s", usr, user_id->pw_name);

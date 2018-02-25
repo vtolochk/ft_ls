@@ -21,6 +21,7 @@
 #include <pwd.h>
 #include <grp.h>
 #include <time.h>
+#include <sys/xattr.h>
 
 #define FAIL 1
 #define OK 0
