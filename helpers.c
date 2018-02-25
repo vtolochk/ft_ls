@@ -47,7 +47,7 @@ int ft_is_link(char *dir)
 	return (1);
 }
 
-char *ft_get_link_value(char *file)
+char *lnk_val(char *file)
 {
 	char *buf;
 

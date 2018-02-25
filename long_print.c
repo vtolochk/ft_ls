@@ -110,35 +110,28 @@ static void ft_print_info(struct stat *status, char *file, int size_width)
 void ft_long_print(char **files, t_ls *data)
 {
 	int i;
-	int link_width;
-	int size_width;
-	int grg_width;
-	int usr_width;
-	struct stat status;
-	char *temp;
+	struct stat st;
+	char *tmp;
+	int indent[4];
 
 	i = 0;
-	link_width = 0;
+	indent[0] = 0;
 	if (files && files[i])
 	{
-		ft_join_dirs(data, files, &status);
-		write_blocks(files, data, &link_width);
-		size_width = ft_get_size_width(files, data);
-		grg_width = ft_get_grg_indent(files, data, 0);
-		usr_width = ft_get_user_indent(files, data, 0);
+		ft_join_dirs(data, files, &st);
+		write_blocks(files, data, &(indent[0]));
+		indent[1] = ft_get_size_width(files, data);
+		indent[2] = ft_get_grg_indent(files, data, 0);
+		indent[3] = ft_get_user_indent(files, data, 0);
 	}
 	while (files && files[i])
 	{
-		temp = ft_strjoin(data->path_to_dir, files[i]);
-		lstat(temp, &status);
-		print_file_mode(temp, status.st_mode);
-		ft_print_owner_and_group(status, usr_width, grg_width, link_width);
-		ft_print_info(&status, files[i], size_width);
-		i++;
-		if (S_ISLNK(status.st_mode))
-			ft_printf(" -> %s\n", ft_get_link_value(temp));
-		else
-			write(1, "\n", 1);
-		free(temp);
+		tmp = ft_strjoin(data->path_to_dir, files[i]);
+		lstat(tmp, &st);
+		print_file_mode(tmp, st.st_mode);
+		ft_print_owner_and_group(st, indent[3], indent[2], indent[0]);
+		ft_print_info(&st, files[i++], indent[1]);
+		S_ISLNK(st.st_mode) ? ft_printf(" -> %s\n", lnk_val(tmp)) : write(1, "\n", 1);
+		free(tmp);
 	}
 }

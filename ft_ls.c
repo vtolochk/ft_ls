@@ -39,7 +39,7 @@ int ft_ls(char **arg_files, t_ls *flags, void (*func)(char **, t_ls *))
 		}
 	}
 	else
-		ft_dirs_third(arg_files, func, &flags);
+		ft_dirs_third(arg_files, func, &flags, 0);
 	ft_free_tab((void**)arg_files);
 	return (OK);
 }
@@ -50,7 +50,6 @@ int main(int argc, char **argv)
 	char **arg_files;
 	void (*func_ptr)(char **, t_ls *);
 
-	flags.argv_temp = argv;
 	if (ft_get_flags(argc, argv, &flags))
 		return (FAIL);
 	func_ptr = ft_get_print_function(&flags);
