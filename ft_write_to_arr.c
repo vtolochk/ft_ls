@@ -32,6 +32,16 @@ long int ft_files_nb(char *file_name, t_ls *f)
 	return (files_nb);
 }
 
+static char **ft_if_an_error(char *file_name, t_ls **f)
+{
+	if ((*f)->arg_nb > 1)
+		ft_printf("%s\n", file_name);
+	ft_print_errno(file_name);
+	(*f)->next_dir = 1;
+	(*f)->first_dir = 0;
+	return (NULL);
+}
+
 char **ft_write_to_arr(char *file_name, t_ls **f)
 {
 	DIR *dir_stream;
@@ -42,14 +52,7 @@ char **ft_write_to_arr(char *file_name, t_ls **f)
 
 	i = 0;
 	if (((files_nb = ft_files_nb(file_name, *f)) == -1))
-	{
-		if ((*f)->arg_nb > 1)
-			ft_printf("%s\n", file_name);
-		ft_print_errno(file_name);
-		(*f)->next_dir = 1;
-		(*f)->first_dir = 0;
-		return (NULL);
-	}
+		return (ft_if_an_error(file_name, f));
 	if (!(files_arr = (char **)malloc(sizeof(char *) * (files_nb + 1))))
 		return (NULL);
 	if (!(dir_stream = opendir(file_name)))

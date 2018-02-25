@@ -32,6 +32,14 @@ static void ft_flags_init(t_ls **flg)
 	(*flg)->third_minus = 0;
 }
 
+static int ft_print_illegal(char c)
+{
+	write(2, "ls: illegal option -- ", 22);
+	write(2, &c, 1);
+	write(2, "\nusage: ls [-GRalrt1] [file ...]\n", 33);
+	return (FAIL);
+}
+
 static int ft_fill_struct(t_ls **flgs, char *tmp)
 {
 	while (*tmp != '\0')
@@ -54,13 +62,27 @@ static int ft_fill_struct(t_ls **flgs, char *tmp)
 			*tmp == '1' || *tmp == 'G')
 		   tmp++;
 		else
-		{
-			write(2, "ls: illegal option -- ", 22);
-			write(2, &(*tmp), 1);
-			write(2, "\nusage: ls [-GRalrt1] [file ...]\n", 33);
-			return (FAIL);
-		}
+			return (ft_print_illegal(*tmp));
 	}
+	return (OK);
+}
+
+static int ft_norma_helper(char **argv, t_ls *flgs)
+{
+	(*argv)++;
+	if (**argv == '-')
+	{
+		(*argv) -= 2;
+		flgs->third_minus = 1;
+		return (OK);
+	}
+	if (**argv)
+	{
+		(*argv)--;
+		return (ft_print_illegal(**argv));
+	}
+	(*argv) -= 2;
+	flgs->double_minus = 1;
 	return (OK);
 }
 
@@ -74,26 +96,7 @@ int ft_get_flags(int argc, char **argv, t_ls *flgs)
 		{
 			(*argv)++;
 			if (**argv == '-')
-			{
-				(*argv)++;
-				if (**argv == '-')
-				{
-					(*argv) -= 2;
-					flgs->third_minus = 1;
-					break ;
-				}
-				if (**argv)
-				{
-					(*argv)--;
-					write(2, "ls: illegal option -- ", 22);
-					write(2, &(**argv), 1);
-					write(2, "\nusage: ls [-GRalrt1] [file ...]\n", 33);
-					return (FAIL);
-				}
-				(*argv) -= 2;
-				flgs->double_minus = 1;
-				break ;
-			}
+				return (ft_norma_helper(argv, flgs));
 			if (!(**argv))
 				flgs->one_minus = 1;
 			if (ft_fill_struct(&flgs, *argv) == FAIL)

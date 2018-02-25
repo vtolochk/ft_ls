@@ -25,7 +25,7 @@ int ft_ls(char **arg_files, t_ls *flags, void (*func)(char **, t_ls *))
 
 	i = 0;
 	ft_error_first(arg_files, flags);
-	ft_files_second(arg_files, flags, func);
+	ft_files_second(arg_files, flags, func, 0);
 	while (arg_files[flags->arg_nb])
 		flags->arg_nb++;
 	if (flags->recursion == 1)

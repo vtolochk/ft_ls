@@ -45,7 +45,5 @@ void ft_dirs_third(char **arg_files, void (*print)(char **, t_ls *), t_ls **f)
 			return ;
 		if (arg_files[i])
 			write(1, "\n", 1);
-//		while (arg_files[i] )// && arg_files[i][0])
-//			write(1, "\n", 1);
 	}
 }
