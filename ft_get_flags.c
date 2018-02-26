@@ -41,26 +41,34 @@ static int ft_print_illegal(char c)
 	return (FAIL);
 }
 
+static void ft_get_flag(t_ls **flgs, char tmp)
+{
+	if (tmp == 'l')
+		(*flgs)->list = 1;
+	else if (tmp == 'R')
+		(*flgs)->recursion = 1;
+	else if (tmp == 'a')
+		(*flgs)->all = 1;
+	else if (tmp == 'r')
+		(*flgs)->reverse = 1;
+	else if (tmp == 't')
+		(*flgs)->time_sort = 1;
+	else if (tmp == '1')
+	{
+		(*flgs)->one = 1;
+		(*flgs)->list = 0;
+	}
+	else if (tmp == 'G')
+		(*flgs)->big_g = 1;
+	else if (tmp == '@')
+		(*flgs)->ext_attr = 1;
+}
+
 static int ft_fill_struct(t_ls **flgs, char *tmp)
 {
 	while (*tmp != '\0')
 	{
-		if (*tmp == 'l')
-			(*flgs)->list = 1;
-		else if (*tmp == 'R')
-			(*flgs)->recursion = 1;
-		else if (*tmp == 'a')
-			(*flgs)->all = 1;
-		else if (*tmp == 'r')
-			(*flgs)->reverse = 1;
-		else if (*tmp == 't')
-			(*flgs)->time_sort = 1;
-		else if (*tmp == '1')
-			(*flgs)->one = 1;
-		else if (*tmp == 'G')
-			(*flgs)->big_g = 1;
-		else if (*tmp == '@')
-			(*flgs)->ext_attr = 1;
+		ft_get_flag(flgs, *tmp);
 		if (*tmp == 'l' || *tmp == 'R' || *tmp == 'a' || *tmp == 'r' ||
 		    *tmp == 't' || *tmp == '1' || *tmp == 'G' || *tmp == '@')
 		   tmp++;

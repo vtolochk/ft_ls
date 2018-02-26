@@ -28,3 +28,40 @@ void ft_print_no_perm(int len, char **arg_files, int i)
 	else
 		write(2, "\n", 1);
 }
+
+static void write_buf(char *buf, ssize_t *i, ssize_t *k)
+{
+	write(1, "\t", 1);
+	while (buf[(*i)])
+	{
+		write(1, &buf[(*i)++], 1);
+		(*k)--;
+	}
+}
+
+void ft_print_ext_attr(char *f, t_ls *data)
+{
+	ssize_t i;
+	ssize_t k;
+	u_int32_t x;
+	char buf[100];
+	char buf1[100];
+
+	i = 0;
+	x = 0;
+	if (data->ext_attr)
+	{
+		if ((k = listxattr(f, buf1, sizeof(buf1), XATTR_NOFOLLOW)) > 0)
+		{
+			while (k-- > 0)
+			{
+				write_buf(buf1, &i, &k);
+				if (!buf1[i++])
+				{
+					ft_printf("\t  %d \n", getxattr(f, &buf1[x], buf, 100, 0, XATTR_NOFOLLOW));
+					x += i;
+				}
+			}
+		}
+	}
+}

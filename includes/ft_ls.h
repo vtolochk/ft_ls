@@ -74,5 +74,6 @@ void ft_print_owner_and_group(struct stat s, int usr, int grg, int lnk);
 int ls_time_cmp(struct stat stat_1, struct stat stat_2, t_ls *f);
 int ft_check_for_perm(char *file);
 void ft_print_no_perm(int len, char **arg_files, int i);
+void ft_print_ext_attr(char *f, t_ls *data);
 
 #endif
