@@ -6,13 +6,13 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:19:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/10 16:19:00 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 14:20:22 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static void ft_while_flags(int *argc, char **argv, unsigned int *j, t_ls *f)
+static void		ft_while_flags(int *argc, char **argv, unsigned int *j, t_ls *f)
 {
 	if (f->one_minus == 1)
 	{
@@ -34,12 +34,12 @@ static void ft_while_flags(int *argc, char **argv, unsigned int *j, t_ls *f)
 	}
 }
 
-char **ft_get_arg_files(int argc, char **argv, t_ls *f)
+char			**ft_get_arg_files(int argc, char **argv, t_ls *f)
 {
-	unsigned int i;
-	unsigned int j;
-	int tmp;
-	char **files_names;
+	unsigned int	i;
+	unsigned int	j;
+	int				tmp;
+	char			**files_names;
 
 	i = 0;
 	j = 1;

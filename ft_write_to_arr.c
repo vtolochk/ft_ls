@@ -6,17 +6,17 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 13:52:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/18 13:52:00 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 14:05:52 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-long int ft_files_nb(char *file_name, t_ls *f)
+long int		ft_files_nb(char *file_name, t_ls *f)
 {
-	DIR *dir_stream;
-	unsigned int files_nb;
-	struct dirent *dir;
+	DIR				*dir_stream;
+	unsigned int	files_nb;
+	struct dirent	*dir;
 
 	files_nb = 0;
 	if (!(dir_stream = opendir(file_name)))
@@ -32,7 +32,7 @@ long int ft_files_nb(char *file_name, t_ls *f)
 	return (files_nb);
 }
 
-static char **ft_if_an_error(char *file_name, t_ls **f)
+static char		**ft_if_an_error(char *file_name, t_ls **f)
 {
 	if ((*f)->arg_nb > 1)
 		ft_printf("%s\n", file_name);
@@ -42,13 +42,13 @@ static char **ft_if_an_error(char *file_name, t_ls **f)
 	return (NULL);
 }
 
-char **ft_write_to_arr(char *file_name, t_ls **f)
+char			**ft_write_to_arr(char *file_name, t_ls **f)
 {
-	DIR *dir_stream;
-	struct dirent *dir;
-	char **files_arr;
-	unsigned int i;
-	long int files_nb;
+	DIR				*dir_stream;
+	struct dirent	*dir;
+	char			**files_arr;
+	unsigned int	i;
+	long int		files_nb;
 
 	i = 0;
 	if (((files_nb = ft_files_nb(file_name, *f)) == -1))

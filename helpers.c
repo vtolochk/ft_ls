@@ -6,13 +6,13 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:25:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/10 16:25:00 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 14:01:22 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-char ft_get_file_type(char *file_name)
+char			ft_get_file_type(char *file_name)
 {
 	struct stat file_stat;
 
@@ -37,7 +37,7 @@ char ft_get_file_type(char *file_name)
 	return ('e');
 }
 
-int ft_is_link(char *dir)
+int				ft_is_link(char *dir)
 {
 	struct stat status;
 
@@ -47,7 +47,7 @@ int ft_is_link(char *dir)
 	return (1);
 }
 
-char *l_v(char *file)
+char			*l_v(char *file)
 {
 	char *buf;
 
@@ -56,14 +56,13 @@ char *l_v(char *file)
 	return (buf);
 }
 
-void ft_error_first(char **arg_files, t_ls *f)
+void			ft_error_first(char **arg_files)
 {
 	int i;
 	int len;
 
 	i = 0;
 	len = ft_arr_len(arg_files);
-	f->big_g = 0; // u have to color this shit in red :)
 	while (arg_files[i])
 	{
 		if ((ft_get_file_type(arg_files[i])) == 'e')
@@ -71,7 +70,8 @@ void ft_error_first(char **arg_files, t_ls *f)
 			ft_print_errno(arg_files[i]);
 			arg_files[i][0] = '\0';
 		}
-		if ((ft_get_file_type(arg_files[i])) == 'd' && ft_check_for_perm(arg_files[i]))
+		if ((ft_get_file_type(arg_files[i])) == 'd' &&
+		ft_check_for_perm(arg_files[i]))
 		{
 			ft_print_no_perm(len, arg_files, i);
 			arg_files[i][0] = '\0';
@@ -80,7 +80,7 @@ void ft_error_first(char **arg_files, t_ls *f)
 	}
 }
 
-int ft_print_errno(char *file_name)
+int				ft_print_errno(char *file_name)
 {
 	write(2, "ls: ", 4);
 	write(2, file_name, ft_strlen(file_name));

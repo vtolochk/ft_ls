@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls_recursion.c                                  :+:      :+:    :+:   */
+/*   recursion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: vtolochk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/11 15:01:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/11 15:01:00 by vtolochk         ###   ########.fr       */
+/*   Created: 2018/02/26 13:18:15 by vtolochk          #+#    #+#             */
+/*   Updated: 2018/02/26 13:19:49 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static int join_dirs(char **f_arr, unsigned int *i, char **next, char *name)
+static int	join_dirs(char **f_arr, unsigned int *i, char **next, char *name)
 {
 	char *temp;
 
@@ -34,7 +34,7 @@ static int join_dirs(char **f_arr, unsigned int *i, char **next, char *name)
 	return (OK);
 }
 
-static int if_dir_is_empty(char *dir_name, t_ls **f, char **files_arr)
+static int	if_dir_is_empty(char *dir_name, t_ls **f, char **files_arr)
 {
 	ft_printf("%s:\n", dir_name);
 	if ((*f)->arg_nb > 1 && (*f)->first_dir == 1 && (*f)->double_minus == 0)
@@ -44,13 +44,14 @@ static int if_dir_is_empty(char *dir_name, t_ls **f, char **files_arr)
 	return (OK);
 }
 
-static void pt_a_srt(t_ls **f, char *d, char **f_a, void (*p)(char **, t_ls *))
+static void	pt_a_srt(t_ls **f, char *d, char **f_a, void (*p)(char **, t_ls *))
 {
 	if ((ft_arr_len(f_a) > 0 || (*f)->arg_nb > 2) &&
-	    ((*f)->first_dir == 0 || (*f)->arg_nb != 1))
+	((*f)->first_dir == 0 || (*f)->arg_nb != 1))
 		ft_printf("%s:\n", d);
-	ft_ascii_sort(f_a, (*f)->reverse);
-	if ((*f)->time_sort == 1)
+	if (!((*f)->f))
+		ft_ascii_sort(f_a, (*f)->reverse);
+	if ((*f)->time_sort == 1 && !((*f)->f))
 		ft_time_sort(f_a, *f, d);
 	ft_strdel(&((*f)->path_to_dir));
 	(*f)->path_to_dir = ft_strdup(d);
@@ -58,17 +59,17 @@ static void pt_a_srt(t_ls **f, char *d, char **f_a, void (*p)(char **, t_ls *))
 	(*f)->printed = 1;
 }
 
-static void norma(t_ls **f)
+static void	norma(t_ls **f)
 {
 	write(1, "\n", 1);
 	(*f)->first_dir = 0;
 }
 
-int ft_dirwalk(char *dir_name, void (*print)(char **, t_ls *), t_ls **f)
+int			ft_dirwalk(char *dir_name, void (*print)(char **, t_ls *), t_ls **f)
 {
-	char *next_dir;
-	char **files_arr;
-	unsigned int i;
+	char			*next_dir;
+	char			**files_arr;
+	unsigned int	i;
 
 	i = 0;
 	if (!dir_name || !dir_name[0])
@@ -92,5 +93,3 @@ int ft_dirwalk(char *dir_name, void (*print)(char **, t_ls *), t_ls **f)
 	ft_free_tab((void**)files_arr);
 	return (OK);
 }
-
-

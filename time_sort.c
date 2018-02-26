@@ -6,16 +6,16 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 18:27:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/21 18:27:00 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 13:17:54 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static void ft_get_time(char *file, char *arg_path, struct stat *status)
+static void		ft_get_time(char *file, char *arg_path, struct stat *status)
 {
-	char *temp;
-	char *temp_2;
+	char		*temp;
+	char		*temp_2;
 
 	if (lstat(file, status) == -1)
 	{
@@ -28,11 +28,11 @@ static void ft_get_time(char *file, char *arg_path, struct stat *status)
 	}
 }
 
-static int ft_timecmp(char *file_1, char *file_2, char *arg_path, t_ls *f)
+static int		ft_timecmp(char *file_1, char *file_2, char *arg_path, t_ls *f)
 {
-	struct stat stat_1;
+	struct stat	stat_1;
 	struct stat stat_2;
-	char *temp;
+	char		*temp;
 
 	arg_path = ft_strjoin(arg_path, "/");
 	temp = ft_strjoin(arg_path, file_1);
@@ -46,7 +46,7 @@ static int ft_timecmp(char *file_1, char *file_2, char *arg_path, t_ls *f)
 	return (ls_time_cmp(stat_1, stat_2, f));
 }
 
-static void ft_swap(char **arr, int j)
+static void		ft_swap(char **arr, int j)
 {
 	char *temp;
 
@@ -55,10 +55,10 @@ static void ft_swap(char **arr, int j)
 	arr[j + 1] = temp;
 }
 
-static void ft_rev_time(char **arr, char *arg_path, unsigned int len, t_ls *f)
+static void		ft_rev_time(char **arr, char *a_path, unsigned int len, t_ls *f)
 {
-	unsigned int    i;
-	unsigned int    j;
+	unsigned int	i;
+	unsigned int	j;
 
 	i = 0;
 	while (i != len - 1)
@@ -66,7 +66,7 @@ static void ft_rev_time(char **arr, char *arg_path, unsigned int len, t_ls *f)
 		j = 0;
 		while (j != len - i - 1)
 		{
-			if (ft_timecmp(arr[j], arr[j + 1], arg_path, f) == 0)
+			if (ft_timecmp(arr[j], arr[j + 1], a_path, f) == 0)
 				ft_swap(arr, j);
 			j++;
 		}
@@ -74,18 +74,18 @@ static void ft_rev_time(char **arr, char *arg_path, unsigned int len, t_ls *f)
 	}
 }
 
-void ft_time_sort(char **arr, t_ls *f, char *arg_path)
+void			ft_time_sort(char **arr, t_ls *f, char *arg_path)
 {
-	unsigned int    i;
-	unsigned int    j;
-	unsigned int    len;
+	unsigned int	i;
+	unsigned int	j;
+	unsigned int	len;
 
 	i = 0;
 	if ((len = ft_arr_len(arr)) == 0)
 		return ;
 	if (f->reverse)
 	{
-		ft_rev_time(arr,  arg_path, len, f);
+		ft_rev_time(arr, arg_path, len, f);
 		return ;
 	}
 	while (i != len - 1)

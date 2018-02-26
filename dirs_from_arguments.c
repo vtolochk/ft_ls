@@ -6,13 +6,13 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 19:21:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/15 19:21:00 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 14:27:28 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static int  skip_errors(int *i, char **arg_f, char **dir_files)
+static int	skip_errors(int *i, char **arg_f, char **dir_files)
 {
 	if (!arg_f[(*i)])
 	{
@@ -29,9 +29,17 @@ static int  skip_errors(int *i, char **arg_f, char **dir_files)
 	return (0);
 }
 
-void        ft_dirs_third(char **a, void (*p)(char **, t_ls *), t_ls **f, int i)
+static void	sort(t_ls **f, char **dir_files, char **a, int i)
 {
-	char    **dir_files;
+	if (!(*f)->f)
+		ft_ascii_sort(dir_files, (*f)->reverse);
+	if ((*f)->time_sort == 1 && !(*f)->f)
+		ft_time_sort(dir_files, *f, a[i]);
+}
+
+void		ft_dirs_third(char **a, void (*p)(char **, t_ls *), t_ls **f, int i)
+{
+	char	**dir_files;
 
 	while (a[i])
 	{
@@ -44,9 +52,7 @@ void        ft_dirs_third(char **a, void (*p)(char **, t_ls *), t_ls **f, int i)
 			if (ft_arr_len(a) > 1)
 				ft_printf("%s:\n", a[i]);
 			dir_files = ft_write_to_arr(a[i], f);
-			ft_ascii_sort(dir_files, (*f)->reverse);
-			if ((*f)->time_sort == 1)
-				ft_time_sort(dir_files, *f, a[i]);
+			sort(f, dir_files, a, i);
 			ft_strdel(&((*f)->path_to_dir));
 			(*f)->path_to_dir = ft_strdup(a[i]);
 			p(dir_files, *f);

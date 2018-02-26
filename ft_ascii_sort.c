@@ -6,16 +6,16 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:29:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/10 16:29:00 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 14:26:20 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-unsigned int ft_arr_len(char **arr)
+unsigned int		ft_arr_len(char **arr)
 {
-	unsigned int i;
-	unsigned int len;
+	unsigned int	i;
+	unsigned int	len;
 
 	i = 0;
 	len = 0;
@@ -26,7 +26,7 @@ unsigned int ft_arr_len(char **arr)
 	return (len);
 }
 
-static void ft_swap(char **arr, int j)
+static void			ft_swap(char **arr, int j)
 {
 	char *temp;
 
@@ -35,10 +35,10 @@ static void ft_swap(char **arr, int j)
 	arr[j + 1] = temp;
 }
 
-static void ft_reverse_ascii(char **arr, unsigned int len)
+static void			ft_reverse_ascii(char **arr, unsigned int len)
 {
-	unsigned int    i;
-	unsigned int    j;
+	unsigned int	i;
+	unsigned int	j;
 
 	i = 0;
 	while (i != len - 1)
@@ -54,11 +54,11 @@ static void ft_reverse_ascii(char **arr, unsigned int len)
 	}
 }
 
-void ft_ascii_sort(char **arr, char reverse)
+void				ft_ascii_sort(char **arr, char reverse)
 {
-	unsigned int    i;
-	unsigned int    j;
-	unsigned int    len;
+	unsigned int	i;
+	unsigned int	j;
+	unsigned int	len;
 
 	i = 0;
 	if ((len = ft_arr_len(arr)) == 0)

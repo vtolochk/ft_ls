@@ -1,12 +1,21 @@
-
-//header
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_print_file_mode.c                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vtolochk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/02/26 14:06:09 by vtolochk          #+#    #+#             */
+/*   Updated: 2018/02/26 14:10:39 by vtolochk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static void write_file_type(char *file)
+static void		write_file_type(char *file)
 {
-	char c;
-	struct stat status;
+	char			c;
+	struct stat		status;
 
 	c = '-';
 	lstat(file, &status);
@@ -27,7 +36,7 @@ static void write_file_type(char *file)
 	write(1, &c, 1);
 }
 
-static void ft_fill_user_field(char **str, mode_t st_mode)
+static void		ft_fill_user_field(char **str, mode_t st_mode)
 {
 	if (st_mode & S_IRWXU && st_mode & S_ISUID)
 	{
@@ -56,7 +65,7 @@ static void ft_fill_user_field(char **str, mode_t st_mode)
 	}
 }
 
-static void ft_fill_grp_field(char **str, mode_t st_mode)
+static void		ft_fill_grp_field(char **str, mode_t st_mode)
 {
 	if (st_mode & S_IRWXG && st_mode & S_ISGID)
 	{
@@ -85,7 +94,7 @@ static void ft_fill_grp_field(char **str, mode_t st_mode)
 	}
 }
 
-static void ft_fill_oth_field(char **str, mode_t st_mode)
+static void		ft_fill_oth_field(char **str, mode_t st_mode)
 {
 	if (st_mode & S_IRWXO && st_mode & S_ISVTX)
 	{
@@ -114,10 +123,10 @@ static void ft_fill_oth_field(char **str, mode_t st_mode)
 	}
 }
 
-void print_file_mode(char *file, mode_t st_mode)
+void			print_file_mode(char *file, mode_t st_mode)
 {
-	char *str;
-	char buf[128];
+	char		*str;
+	char		buf[128];
 
 	str = ft_strnew(9);
 	ft_memset(str, '-', 9);
