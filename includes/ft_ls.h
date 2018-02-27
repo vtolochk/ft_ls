@@ -6,7 +6,7 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/06 10:16:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/08 15:21:30 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 14:24:03 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,7 @@
 #include <pwd.h>
 #include <grp.h>
 #include <time.h>
-
-#define NO_ACCESS "---"
-#define X_ACCESS "--x"
-#define W_ACCESS "-w-"
-#define WX_ACCESS "-wx"
-#define R_ACCESS "r--"
-#define RX_ACCESS "r-x"
-#define RW_ACCESS "rw-"
-#define RWX_ACCESS "rwx"
+#include <sys/xattr.h>
 
 #define FAIL 1
 #define OK 0
@@ -42,34 +34,48 @@ typedef  struct s_ls
 	char reverse;
 	char time_sort;
 	char one;
-	char big_g;
+	char ext_attr;
 	char double_minus;
+	char third_minus;
 	char first_dir;
-	char files_second;
 	unsigned int arg_nb;
-	char **argv_temp;
 	char next_dir;
 	char *path_to_dir;
 	char one_minus;
-	char go_via_link;
+	char printed;
+	char f;
+	char b_a;
 }               t_ls;
 
 unsigned int ft_arr_len(char **arr);
 void ft_one_print(char **file, t_ls *data);
 void ft_long_print(char **file, t_ls *data);
-int ft_ls(char **argv, char **arg_files, t_ls *flags, void (*func)(char **, t_ls *));
+int ft_ls(char **arg_files, t_ls *flags, void (*func)(char **, t_ls *));
 char ft_isdir(char *dir, t_ls *f, char **files_arr);
 int ft_dirwalk(char *dir_name, void (*print)(char **, t_ls *), t_ls **f);
-int ft_print_errno(char **argv, char *file_name);
+int ft_print_errno(char *file_name);
 char **ft_get_arg_files(int argc, char **argv, t_ls *f);
 long int ft_files_nb(char *file_name, t_ls *f);
 int ft_get_flags(int argc, char **argv, t_ls *flgs);
 char ft_get_file_type(char *file_name);
 void ft_ascii_sort(char **arr, char reverse);
-void ft_error_first(char **argv, char **arg_files, t_ls *f);
-void ft_files_second (char **arg_files, t_ls *f, void (*print)(char **, t_ls *));
-void ft_dirs_third(char **arg_files, void (*print)(char **, t_ls *), t_ls **f);
+void ft_error_first(char **arg_files);
+void fls_sc (char **arg, t_ls *f, void (*prt)(char **, t_ls *), int k);
+void ft_dirs_third(char **a, void (*p)(char **, t_ls *), t_ls **f, int i);
 char **ft_write_to_arr(char *file_name, t_ls **f);
 void ft_time_sort(char **arr, t_ls *f, char *arg_path);
+int ft_is_link(char *dir);
+void print_file_mode(char *file, mode_t st_mode);
+char *l_v(char *file);
+unsigned int ft_get_user_indent(char **files, t_ls *data, unsigned int temp);
+unsigned int ft_get_grg_indent(char **files, t_ls *data, unsigned int temp);
+unsigned int ft_get_size_width(char **files, t_ls *data);
+void ft_print_owner_and_group(struct stat s, int usr, int grg, int lnk);
+int ls_time_cmp(struct stat stat_1, struct stat stat_2, t_ls *f);
+int ft_check_for_perm(char *file);
+void ft_print_no_perm(int len, char **arg_files, int i);
+void ft_print_ext_attr(char *f, t_ls *data);
+int ft_print_illegal(char c);
+void ft_print_time(struct stat status);
 
 #endif

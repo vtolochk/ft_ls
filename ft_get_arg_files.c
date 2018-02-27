@@ -6,16 +6,19 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:19:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/10 16:19:00 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 14:20:22 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-static void ft_while_flags(int *argc, char **argv, unsigned int *j, t_ls *f)
+static void		ft_while_flags(int *argc, char **argv, unsigned int *j, t_ls *f)
 {
 	if (f->one_minus == 1)
+	{
+		(*j)++;
 		return ;
+	}
 	while (*argc != 1 && (argv[(*j)][0] == '-'))
 	{
 		if (argv[(*j)++][1] == '-')
@@ -23,18 +26,20 @@ static void ft_while_flags(int *argc, char **argv, unsigned int *j, t_ls *f)
 			(*j)++;
 			if (f->double_minus == 1)
 				(*j)--;
+			if (f->third_minus == 1)
+				(*j) -= 2;
 			break ;
 		}
 		(*argc)--;
 	}
 }
 
-char **ft_get_arg_files(int argc, char **argv, t_ls *f)
+char			**ft_get_arg_files(int argc, char **argv, t_ls *f)
 {
-	unsigned int i;
-	unsigned int j;
-	int tmp;
-	char **files_names;
+	unsigned int	i;
+	unsigned int	j;
+	int				tmp;
+	char			**files_names;
 
 	i = 0;
 	j = 1;
@@ -51,6 +56,8 @@ char **ft_get_arg_files(int argc, char **argv, t_ls *f)
 		files_names[i++] = ft_strdup(argv[j++]);
 		argc--;
 	}
+	if (files_names[0] == NULL)
+		files_names[0] = ft_strdup(".");
 	files_names[i] = NULL;
 	return (files_names);
 }

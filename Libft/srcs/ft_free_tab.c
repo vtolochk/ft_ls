@@ -26,5 +26,5 @@ void    *ft_free_tab(void **tab)
     }
     free(tab);
     tab = 0;
-    return (tab);
+    return (0);
 }

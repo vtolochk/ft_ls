@@ -6,13 +6,13 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:25:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/10 16:25:00 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 14:01:22 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-char ft_get_file_type(char *file_name)
+char			ft_get_file_type(char *file_name)
 {
 	struct stat file_stat;
 
@@ -37,7 +37,7 @@ char ft_get_file_type(char *file_name)
 	return ('e');
 }
 
-static int ft_is_link(char *dir)
+int				ft_is_link(char *dir)
 {
 	struct stat status;
 
@@ -47,89 +47,42 @@ static int ft_is_link(char *dir)
 	return (1);
 }
 
-char ft_isdir(char *dir, t_ls *f, char **files_arr)
+char			*l_v(char *file)
 {
-	DIR *ptr;
-	char *temp;
+	char *buf;
 
-	if (ft_is_link(dir) == 0)
-		return (0);
-	if ((ptr = opendir(dir)))
-	{
-		if (readdir(ptr))
-		{
-			closedir(ptr);
-			return (1);
-		}
-	}
-	else
-	{
-		if (ft_get_file_type(dir) == 'd')
-		{
-			if (f->first_dir == 0 || ft_arr_len(files_arr) > 1)
-			{
-				write(1, "\n", 1);
-				write(1, dir, ft_strlen(dir));
-				write(1, ":\n", 2);
-				f->first_dir = 0;
-			}
-			temp = ft_strrchr(dir, '/');
-			ft_print_errno(f->argv_temp, ++temp);
-		}
-	}
-	return (0);
+	buf = ft_strnew(127);
+	readlink(file, buf, 126);
+	return (buf);
 }
 
-void ft_error_first(char **argv, char **arg_files, t_ls *f)
+void			ft_error_first(char **arg_files)
 {
 	int i;
+	int len;
 
 	i = 0;
-	f->big_g = 0; // u have to color this shit in red :)
+	len = ft_arr_len(arg_files);
 	while (arg_files[i])
 	{
 		if ((ft_get_file_type(arg_files[i])) == 'e')
 		{
-			ft_print_errno(argv, arg_files[i]);
+			ft_print_errno(arg_files[i]);
 			arg_files[i][0] = '\0';
 		}
-		i++;
-	}
-}
-
-void ft_files_second(char **arg_files, t_ls *f, void (*print)(char **, t_ls *))
-{
-	unsigned int i;
-	unsigned int k;
-	char **temp_arg_files;
-
-	i = 0;
-	k = 0;
-	temp_arg_files = (char **)malloc((ft_arr_len(arg_files) + 1) * (sizeof(char *)));
-	while (arg_files[i])
-	{
-		if (ft_get_file_type(arg_files[i]) == '-' || ft_get_file_type(arg_files[i]) == 'c')
+		if ((ft_get_file_type(arg_files[i])) == 'd' &&
+		ft_check_for_perm(arg_files[i]))
 		{
-			temp_arg_files[k] = ft_strdup(arg_files[i]);
+			ft_print_no_perm(len, arg_files, i);
 			arg_files[i][0] = '\0';
-			k++;
 		}
 		i++;
 	}
-	temp_arg_files[k] = NULL;
-	if (ft_strncmp(arg_files[0], ".", 2) == 0 && arg_files[1] == NULL)
-	{
-		ft_free_tab((void**)temp_arg_files);
-		return ;
-	}
-	print(temp_arg_files, f);
-	ft_free_tab((void**)temp_arg_files);
 }
 
-int ft_print_errno(char **argv, char *file_name)
+int				ft_print_errno(char *file_name)
 {
-	write(2, argv[0], ft_strlen(argv[0]));
-	write(2, ": ", 2);
+	write(2, "ls: ", 4);
 	write(2, file_name, ft_strlen(file_name));
 	write(2, ": ", 2);
 	write(2, strerror(errno), ft_strlen(strerror(errno)));
