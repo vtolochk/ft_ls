@@ -6,7 +6,7 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:25:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/26 14:01:22 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/03/04 10:43:59 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,28 @@ int				ft_is_link(char *dir)
 	return (1);
 }
 
-char			*l_v(char *file)
+void			l_v(char *file)
 {
 	char *buf;
 
 	buf = ft_strnew(127);
 	readlink(file, buf, 126);
-	return (buf);
+	if (buf)
+	{
+		ft_printf(" -> %s\n", buf);
+	}
+	free(buf);
 }
 
-void			ft_error_first(char **arg_files)
+void			ft_error_first(char **arg_files, t_ls *flg)
 {
 	int i;
 	int len;
 
 	i = 0;
 	len = ft_arr_len(arg_files);
+	if (flg->one_minus && ft_get_file_type("-") == 'e')
+		ft_print_errno("-");
 	while (arg_files[i])
 	{
 		if ((ft_get_file_type(arg_files[i])) == 'e')

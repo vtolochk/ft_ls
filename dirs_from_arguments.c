@@ -6,7 +6,7 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/15 19:21:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/26 14:27:28 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 15:47:34 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	sort(t_ls **f, char **dir_files, char **a, int i)
 		ft_time_sort(dir_files, *f, a[i]);
 }
 
-void		ft_dirs_third(char **a, void (*p)(char **, t_ls *), t_ls **f, int i)
+void		drs_thrd(char **a, void (*p)(char **, t_ls *), t_ls **f, int i)
 {
 	char	**dir_files;
 

@@ -6,7 +6,7 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/18 15:05:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/26 13:58:55 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 14:47:47 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,9 +99,9 @@ void			ft_long_print(char **f, t_ls *d)
 		t = ft_strjoin(d->path_to_dir, f[i]);
 		lstat(t, &st);
 		print_file_mode(t, st.st_mode);
-		ft_print_owner_and_group(st, indent[3], indent[2], indent[0]);
+		print_owner_and_group(st, indent[3], indent[2], indent[0]);
 		ft_print_info(&st, f[i++], indent[1]);
-		S_ISLNK(st.st_mode) ? ft_printf(" -> %s\n", l_v(t)) : write(1, "\n", 1);
+		S_ISLNK(st.st_mode) ? l_v(t) : write(1, "\n", 1);
 		ft_print_ext_attr(t, d);
 		free(t);
 	}

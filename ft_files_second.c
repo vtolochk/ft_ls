@@ -6,7 +6,7 @@
 /*   By: vtolochk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 13:15:47 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/26 14:24:41 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 16:44:44 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static void		ft_get_dir(char **temp_argv, char **arg_files, int *i, int *k)
 
 static void		ft_free_and_print_nl(char **files, int k, int i)
 {
-	if (i > k && k)
+	if (i > k && k > 1)
 		write(1, "\n", 1);
 	ft_free_tab((void**)files);
 }
@@ -45,7 +45,7 @@ static void		write_arr(char **tmp_arg_files, char **arg_files, int *k, int i)
 	arg_files[i][0] = '\0';
 }
 
-void			fls_sc(char **arg, t_ls *f, void (*prt)(char **, t_ls *), int k)
+void			fls_sc(char **arg, t_ls *f, void (*pt)(char **, t_ls *), int k)
 {
 	int		i;
 	char	**temp_arg_files;
@@ -67,7 +67,7 @@ void			fls_sc(char **arg, t_ls *f, void (*prt)(char **, t_ls *), int k)
 		ft_free_tab((void**)temp_arg_files);
 	else
 	{
-		prt(temp_arg_files, f);
+		pt(temp_arg_files, f);
 		ft_free_and_print_nl(temp_arg_files, k, i);
 	}
 }

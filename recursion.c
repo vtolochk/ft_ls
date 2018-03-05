@@ -6,7 +6,7 @@
 /*   By: vtolochk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 13:18:15 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/26 13:19:49 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 15:47:52 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,28 +65,28 @@ static void	norma(t_ls **f)
 	(*f)->first_dir = 0;
 }
 
-int			ft_dirwalk(char *dir_name, void (*print)(char **, t_ls *), t_ls **f)
+int			ft_dirwalk(char *d_name, void (*pr)(char **, t_ls *), t_ls **f)
 {
 	char			*next_dir;
 	char			**files_arr;
 	unsigned int	i;
 
 	i = 0;
-	if (!dir_name || !dir_name[0])
+	if (!d_name || !d_name[0])
 		return (OK);
-	if (!(files_arr = ft_write_to_arr(dir_name, f)))
+	if (!(files_arr = ft_write_to_arr(d_name, f)))
 		return ((*f)->next_dir == 1 ? OK : FAIL);
 	if (*files_arr == NULL)
-		return (if_dir_is_empty(dir_name, f, files_arr));
-	pt_a_srt(f, dir_name, files_arr, print);
+		return (if_dir_is_empty(d_name, f, files_arr));
+	pt_a_srt(f, d_name, files_arr, pr);
 	while (files_arr[i])
 	{
-		if (join_dirs(files_arr, &i, &next_dir, dir_name) == 1)
+		if (join_dirs(files_arr, &i, &next_dir, d_name) == 1)
 			return (OK);
 		if (ft_isdir(next_dir, *f, files_arr))
 		{
 			norma(f);
-			ft_dirwalk(next_dir, print, f);
+			ft_dirwalk(next_dir, pr, f);
 		}
 		free(next_dir);
 	}

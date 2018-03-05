@@ -6,7 +6,7 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 18:27:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/26 13:17:54 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/27 15:17:27 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,11 @@ static void		ft_get_time(char *file, char *arg_path, struct stat *status)
 		file = ft_strjoin(temp, file);
 		ft_strdel(&temp_2);
 		lstat(temp, status);
+		free(temp);
+		free(file);
 	}
+	else
+		free(file);
 }
 
 static int		ft_timecmp(char *file_1, char *file_2, char *arg_path, t_ls *f)
@@ -43,6 +47,7 @@ static int		ft_timecmp(char *file_1, char *file_2, char *arg_path, t_ls *f)
 	if (!temp)
 		temp = ft_strdup(file_2);
 	ft_get_time(temp, arg_path, &stat_2);
+	free(arg_path);
 	return (ls_time_cmp(stat_1, stat_2, f));
 }
 

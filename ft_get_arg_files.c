@@ -6,7 +6,7 @@
 /*   By: vtolochk <vtolochk@student.unit.ua>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 16:19:00 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/26 14:20:22 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 17:59:23 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char			**ft_get_arg_files(int argc, char **argv, t_ls *f)
 		files_names[i++] = ft_strdup(argv[j++]);
 		argc--;
 	}
-	if (files_names[0] == NULL)
+	if (files_names[0] == NULL && !f->one_minus)
 		files_names[0] = ft_strdup(".");
 	files_names[i] = NULL;
 	return (files_names);

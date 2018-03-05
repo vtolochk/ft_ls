@@ -6,7 +6,7 @@
 /*   By: vtolochk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/26 13:20:11 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/26 13:24:42 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/02/26 15:46:06 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int				ft_print_illegal(char c)
 {
 	write(2, "ls: illegal option -- ", 22);
 	write(2, &c, 1);
-	write(2, "\nusage: ls [-GRalrt1] [file ...]\n", 33);
+	write(2, "\nusage: ls [-AR@alfrt1] [file ...]\n", 35);
 	return (FAIL);
 }
 
