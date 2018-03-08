@@ -6,7 +6,7 @@
 /*   By: vtolochk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/27 12:15:35 by vtolochk          #+#    #+#             */
-/*   Updated: 2018/02/08 16:05:09 by vtolochk         ###   ########.fr       */
+/*   Updated: 2018/01/30 14:06:48 by vtolochk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char			*ft_itoa_base(size_t value, size_t base)
 	i = 0;
 	if (base < 2 || base > 16)
 		return (NULL);
-	if (!(res = (char *)malloc(33 * sizeof(char))))
+	if (!(res = (char *)malloc(21 * sizeof(char))))
 		return (NULL);
 	ft_write_to_arr(value, base, &i, res);
 	res[i] = '\0';
