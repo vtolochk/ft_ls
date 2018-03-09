@@ -49,7 +49,7 @@ int					get_next_line(const int fd, char **line)
 	if (fd < 0 || !line || BUFF_SIZE < 1)
 		return (-1);
 	*line = NULL;
-	ptr[fd] = ptr[fd] ? ptr[fd] : ft_strdup("");
+	ptr[fd] = ptr[fd] ? ptr[fd] : ft_strnew(0);
 	while (ret > 0)
 	{
 		ret = ft_read_line(line, ptr, fd);
