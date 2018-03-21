@@ -6,13 +6,15 @@
 #    By: vtolochk <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/02/06 10:21:26 by vtolochk          #+#    #+#              #
-#    Updated: 2018/03/04 09:56:32 by vtolochk         ###   ########.fr        #
+#    Updated: 2018/03/21 14:06:11 by vtolochk         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY: all clean fclean re
 
 NAME = ft_ls
+
+HEADER = includes/ft_ls.h
 
 SRCS = ft_ls.c recursion.c ft_get_flags.c perm_and_ext_attr.c \
 	   ft_get_arg_files.c helpers.c ft_ascii_sort.c one_print.c \
@@ -26,6 +28,9 @@ CFLAGS = -Wall -Werror -Wextra -Iincludes
 CC = gcc
 
 all: $(NAME)
+
+%.o: %.c $(HEADER)
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 $(NAME): $(OBJ) 	
 	@make -C ./Libft/
